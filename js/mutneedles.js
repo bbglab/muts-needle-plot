@@ -348,8 +348,14 @@ MutNeedles.prototype.drawNeedles = function(svg, mutationData, regionData) {
             .attr("r", function(data) { return headSize(data.value) })
             .style("fill", function(data) { return data.color })
             .style("stroke", function(data) {return d3.rgb(data.color).darker()})
-            .on('mouseover', tip.show)
+            .on('mouseover',  function(d){ d3.select(this).moveToFront(); tip.show(d); })
             .on('mouseout', tip.hide);
+
+        d3.selection.prototype.moveToFront = function() {
+            return this.each(function(){
+                this.parentNode.appendChild(this);
+            });
+        };
 
         // adjust y-scale according to highest value an draw the rest
         if (regionData != undefined) {
