@@ -1,3 +1,12 @@
+/**
+ *
+ * Mutations Needle Plot
+ *
+ * Creates a needle plot (a.k.a stem plot, lolliplot and soon also balloon plot ;-)
+ *
+ * @author Michael P Schroeder
+ * @class
+ */
 
 function MutNeedles (config) {
 

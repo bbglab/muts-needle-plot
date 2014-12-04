@@ -63,43 +63,44 @@ text {
 }
 
 </style>
+
 <body>
+
 <script src="js/d3.min.js"></script>
 <script src="js/d3.tip.v0.6.3.js"></script>
 <script src="js/mutneedles.js"></script>
 <script>
 
+    colorMap = {
+        // mutation categories
+        "missense_variant": "yellow",
+        "frameshift_variant": "blue",
+        "stop_gained": "red",
+        "stop_lost": "orange",
+        "synonymous_variant": "lightblue",
+        // regions
+        "X-binding": "olive",
+        "region1": "olive"
+    };
 
-colorMap = {
-    // mutation categories
-    "missense_variant": "yellow",
-    "frameshift_variant": "blue",
-    "stop_gained": "red",
-    "stop_lost": "orange",
-    "synonymous_variant": "lightblue",
-    // regions
-    "X-binding": "olive",
-    "region1": "olive"
-};
+    legends = {
+        x: "Corresponding protein positions to transcript X",
+        y: "Number of recorded mutation in transcript X of Gene Y and CT Z"
+    };
 
-legends = {
-    x: "Corresponding protein positions to transcript X",
-    y: "Number of recorded mutation in transcript X of Gene Y and CT Z"
-};
+    //Crate config Object
+    plotConfig = {
+        maxCoord :      350,
+        minCoord :      0,
+        targetElement : "body",
+        mutationData:   "muts.json",
+        regionData:     "regions.json",
+        colorMap:       colorMap,
+        legends:        legends
+    };
 
-//Crate config Object
-plotConfig = {
-    maxCoord :      350,
-    minCoord :      0,
-    targetElement : "body",
-    mutationData:   "muts.json",
-    regionData:     "regions.json",
-    colorMap:       colorMap,
-    legends:        legends
-};
-
-// Instantiate a plot
-p = new MutNeedles(plotConfig);
+    // Instantiate a plot
+    p = new MutNeedles(plotConfig);
 
 
 </script>
