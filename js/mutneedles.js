@@ -113,48 +113,72 @@ MutNeedles.prototype.drawRegions = function(svg, regionData) {
           .attr("height", 10)
           .attr("class", "regionsBG");
 
-    d3.json(regionData, function(error, regions) {
-        if (error) {return console.debug(error)}
+    function draw(regionList) {
 
+        var regions = d3.select(".mutneedles").selectAll()
+            .data(regionList)
+            .enter()
+            .append("g")
+            .attr("class", "region");
+
+        regions.append("rect")
+            .attr("x", function (r) {
+                return x(r.start)
+            })
+            .attr("y", y(0) + 7)
+            .attr("ry", "3")
+            .attr("rx", "3")
+            .attr("width", function (r) {
+                return x(r.end) - x(r.start)
+            })
+            .attr("height", 16)
+            .style("fill", function (data) {
+                return data.color
+            })
+            .style("stroke", function (data) {
+                return d3.rgb(data.color).darker()
+            });
+
+        regions.append("text")
+            .attr("class", "regionName")
+            .attr("text-anchor", "middle")
+            .attr("x", function (r) {
+                return x(r.start) + (x(r.end) - x(r.start)) / 2
+            })
+            .attr("y", y(0) + 16)
+            .attr("dy", "0.35em")
+            .style("font-size", "12px")
+            .style("text-decoration", "bold")
+            .text(function (data) {
+                return data.name
+            });
+    }
+
+    function formatRegions(regions) {
         regionList = [];
         for (key in regions) {
 
-            regionList.push( {
-                'name': key, 
+            regionList.push({
+                'name': key,
                 'start': getRegionStart(regions[key]),
                 'end': getRegionEnd(regions[key]),
                 'color': getRegionColor(key)
             });
         }
+        return regionList;
+    }
 
-        var regions = d3.select(".mutneedles").selectAll()
-            .data(regionList)
-          .enter()
-          .append("g")
-          .attr("class", "region");
-
-        regions.append("rect")
-            .attr("x", function(r) { return x(r.start) })
-            .attr("y", y(0) + 7)
-            .attr("ry", "3")
-            .attr("rx","3")
-            .attr("width", function(r) { return x(r.end)-x(r.start) } )
-            .attr("height", 16)
-            .style("fill", function(data) {return data.color})
-            .style("stroke", function(data) {return d3.rgb(data.color).darker()});
-         
-        regions.append("text")
-           .attr("class", "regionName")
-           .attr("text-anchor", "middle")
-           .attr("x", function(r) { return  x(r.start)+(x(r.end)-x(r.start))/2 })
-           .attr("y", y(0) + 16)
-           .attr("dy", "0.35em")
-           .style("font-size", "12px") 
-           .style("text-decoration", "bold")
-           .text(function(data) { return data.name } );
-
-
-    });
+    if (typeof regionData == "string") {
+        // assume data is in a file
+        d3.json(regionData, function(error, regions) {
+            if (error) {return console.debug(error)}
+            regionList = formatRegions(regions);
+            draw(regionList);
+        });
+    } else {
+        regionList = formatRegions(regionData);
+        draw(regionList);
+    }
 
 };
 
