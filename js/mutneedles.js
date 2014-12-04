@@ -245,8 +245,8 @@ MutNeedles.prototype.drawNeedles = function(svg, mutationData, regionData) {
       }
       return stickHeight;
     };
-   
-    formatMutationData = function(d) {
+
+    function formatMutationEntry(d) {
 
         coordString = d.coord;
         numericCoord = formatCoord(d.coord);
@@ -273,42 +273,52 @@ MutNeedles.prototype.drawNeedles = function(svg, mutationData, regionData) {
         } else {
             console.debug("discarding " + d.coord + " " + d.category)
         }
-    };
+    }
 
- 
-    d3.json(mutationData, function(error, unformattedMuts) {
+    var muts = [];
 
 
-        muts = [];
+    if (typeof mutationData == "string") {
+        d3.json(mutationData, function(error, unformattedMuts) {
+            muts = prepareMuts(unformattedMuts);
+            paintMuts(muts);
+        });
+    } else {
+        muts = prepareMuts(mutationData);
+        paintMuts(muts);
+    }
 
+    function prepareMuts(unformattedMuts) {
         for (key in unformattedMuts) {
-            formatted = formatMutationData(unformattedMuts[key]);
+            formatted = formatMutationEntry(unformattedMuts[key]);
             if (formatted != undefined) {
-                muts.push(formatted)
+                muts.push(formatted);
             }
         }
+        return muts;
+    }
 
+    function paintMuts(muts) {
         var needles = d3.select(".mutneedles").selectAll()
             .data(muts).enter()
             .append("line")
-               .attr("y1", function(data) { return y(data.stickHeight+data.value); })
-               .attr("y2", function(data) { return y(data.stickHeight) })
-               .attr("x1", function(data) { return x(data.coord) })
-               .attr("x2", function(data) { return x(data.coord) })
-               .attr("class", "needle-line");
+            .attr("y1", function(data) { return y(data.stickHeight+data.value); })
+            .attr("y2", function(data) { return y(data.stickHeight) })
+            .attr("x1", function(data) { return x(data.coord) })
+            .attr("x2", function(data) { return x(data.coord) })
+            .attr("class", "needle-line");
 
 
         minSize = 4;
         maxSize = 10;
         headSizeScale = d3.scale.log().range([minSize,maxSize]).domain([1, highest/2]);
         headSize = function(n) {
-
             return d3.min([d3.max([headSizeScale(n),minSize]), maxSize]);
-        }
+        };
 
         var needleHeads = d3.select(".mutneedles").selectAll()
             .data(muts)
-          .enter().append("circle")
+            .enter().append("circle")
             .attr("cy", function(data) { return y(data.stickHeight+data.value) } )
             .attr("cx", function(data) { return x(data.coord) } )
             .attr("r", function(data) { return headSize(data.value) })
@@ -317,11 +327,11 @@ MutNeedles.prototype.drawNeedles = function(svg, mutationData, regionData) {
             .on('mouseover', tip.show)
             .on('mouseout', tip.hide);
 
-            // adjust y-scale according to highest value an draw the rest
-            if (regionData != undefined) {
-                plotter.drawRegions(svg, regionData);
-            }
-            plotter.drawAxes(svg);
-    });
+        // adjust y-scale according to highest value an draw the rest
+        if (regionData != undefined) {
+            plotter.drawRegions(svg, regionData);
+        }
+        plotter.drawAxes(svg);
+    }
 
 };
