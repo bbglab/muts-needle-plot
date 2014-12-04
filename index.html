@@ -67,8 +67,18 @@ text {
 <script>
 
 
-categs = {"missense_variant": "lightblue", "frameshift_variant": "blue", "stop_gained": "red", "stop_lost": "orange", "synonymous_variant": "yellow"};
-p = new MutNeedles(350, "body", "regions.json", "muts.tsv", categs);
+colorMap = {
+    // mutation categories
+    "missense_variant": "lightblue",
+    "frameshift_variant": "blue",
+    "stop_gained": "red",
+    "stop_lost": "orange",
+    "synonymous_variant": "yellow",
+    // regions
+    "X-binding": "olive",
+    "region1": "olive"
+};
+p = new MutNeedles(350, "body", "regions.json", "muts.tsv", colorMap);
 
 
 </script>
