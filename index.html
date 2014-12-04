@@ -78,7 +78,25 @@ colorMap = {
     "X-binding": "olive",
     "region1": "olive"
 };
-p = new MutNeedles(350, "body", "regions.json", "muts.tsv", colorMap);
+
+legends = {
+    x: "Corresponding protein positions to transcript X",
+    y: "Number of recorded mutation in transcript X of Gene Y and CT Z"
+}
+
+//Crate config Object
+plotConfig = {
+    maxCoord :      350,
+    minCoord :      0,
+    targetElement : "body",
+    mutationData:   "muts.tsv",
+    regionData:     "regions.json",
+    colorMap:       colorMap,
+    legends:        legends
+}
+
+// Instantiate a plot
+p = new MutNeedles(plotConfig);
 
 
 </script>

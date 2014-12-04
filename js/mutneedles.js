@@ -1,17 +1,24 @@
 
-function MutNeedles (maxCoord, target, regionData, mutationData, colorMap) {
+function MutNeedles (config) {
+
+    this.maxCoord = config.maxCoord;                    // The maximum coord (x-axis)
+    minCoord = config.minCoord || 0;                    // The minimum coord (x-axis)
+    targetElement = config.targetElement || "body";     // Where to append the plot (svg)
+    mutationData = config.mutationData;                 // .json file or dict
+    regionData = config.regionData;                     // .json file or dict
+    this.colorMap = config.colorMap || {};              // dict
+    this.legends = config.legends || {
+        "y": "Value",
+        "x": "Coordinate"
+    };
 
     this.width = width;
     this.height = height;
-    this.maxCoord = maxCoord;
     this.buffer = 0;
-    this.colorMap = {};
-    if (colorMap != undefined) {
-        this.colorMap=colorMap
-    }
 
     var width = this.width = 1000;
     var height = this.height = 500;
+    var maxCoord = this.maxCoord;
 
     if (width >= height) {
       var buffer = height / 8;
@@ -28,7 +35,7 @@ function MutNeedles (maxCoord, target, regionData, mutationData, colorMap) {
         return "<span style='color:white'>" + d.value + " " + d.category +  " at " + d.coordString; + "</span>";
       })
 
-    var svg = d3.select(target).append("svg")
+    var svg = d3.select(targetElement).append("svg")
         .attr("width", width)
         .attr("height", height)
         .attr("class", "mutneedles");
@@ -57,7 +64,7 @@ function MutNeedles (maxCoord, target, regionData, mutationData, colorMap) {
       .nice();
     this.y = y;
     
-    this.drawNeedleHeads(svg, mutationData, regionData);
+    this.drawNeedles(svg, mutationData, regionData);
 
 }
 
@@ -164,13 +171,13 @@ MutNeedles.prototype.drawAxes = function(svg) {
       .attr("class", "y-label")
       .attr("text-anchor", "middle")
       .attr("transform", "translate(" + (this.buffer / 3) + "," + (this.height / 2) + "), rotate(-90)")
-      .text("Count of mutations @ Coord");
+      .text(this.legends.y);
 
     svg.append("text")
       .attr("class", "x-label")
       .attr("text-anchor", "middle")
       .attr("transform", "translate(" + (this.width / 2) + "," + (this.height - this.buffer / 3) + ")")
-      .text("Protein position for Transcript X");
+      .text(this.legends.x);
     
 }
 
@@ -185,7 +192,7 @@ MutNeedles.prototype.needleHeadColor = function(category, colors) {
     }
 }
 
-MutNeedles.prototype.drawNeedleHeads = function(svg, mutationData, regionData) {
+MutNeedles.prototype.drawNeedles = function(svg, mutationData, regionData) {
 
     var maxCoord = this.maxCoord;
     var width = this.width;
@@ -284,7 +291,9 @@ MutNeedles.prototype.drawNeedleHeads = function(svg, mutationData, regionData) {
             .on('mouseout', tip.hide);
 
             // adjust y-scale according to highest value an draw the rest
-            plotter.drawRegions(svg, regionData);
+            if (regionData != undefined) {
+                plotter.drawRegions(svg, regionData);
+            }
             plotter.drawAxes(svg);
     });
 
