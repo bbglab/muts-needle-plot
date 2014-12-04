@@ -9,8 +9,8 @@ coord	category	value
 60	frameshift_variant	1
 61-63	frameshift_variant	1
 62	frameshift_variant	1
-65	missense_variant	3
 65	stop_gained	7
+65	missense_variant	3
 66-67	frameshift_variant	1
 68	frameshift_variant	1
 68	stop_gained	5

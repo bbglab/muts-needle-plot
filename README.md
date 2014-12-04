@@ -1,4 +1,4 @@
-D3 Needleplot (aka Lollipop) for mutation data
+D3 Needleplot (aka Stem-Plot or Lollipop-Plot) for mutation data
 ================================================
 
 !! Under development - will be added to BioJS when complete
