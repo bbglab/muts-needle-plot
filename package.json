@@ -60,7 +60,11 @@
     "first": "simple_example"
   },
   "keywords": [
-    "heatmap",
-    "biojs"
+    "needle-plot",
+    "biojs",
+    "mutations",
+    "lolliplot",
+    "lollipop-plot",
+    "stem-plot"
   ]
 }
