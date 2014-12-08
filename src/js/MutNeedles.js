@@ -85,6 +85,8 @@ MutNeedles.prototype.drawRegions = function(svg, regionData) {
     var y = this.y;
     var x = this.x;
 
+    var below = true;
+
 
     getRegionStart = function(region) {
         return parseInt(region.split("-")[0])
@@ -104,11 +106,18 @@ MutNeedles.prototype.drawRegions = function(svg, regionData) {
         }
     };
 
+    var bg_offset = 0;
+    var region_offset = bg_offset-3
+    var text_offset = bg_offset + 20;
+    if (below != true) {
+        text_offset = bg_offset+5;
+    }
+
     var regionsBG = d3.select(".mutneedles").selectAll()
         .data([1]).enter()
         .append("rect")
           .attr("x", x(0) )
-          .attr("y", y(0) + 10 )
+          .attr("y", y(0) + bg_offset )
           .attr("width", x(maxCoord) - x(0) )
           .attr("height", 10)
           .attr("class", "regionsBG");
@@ -125,7 +134,7 @@ MutNeedles.prototype.drawRegions = function(svg, regionData) {
             .attr("x", function (r) {
                 return x(r.start)
             })
-            .attr("y", y(0) + 7)
+            .attr("y", y(0) + region_offset )
             .attr("ry", "3")
             .attr("rx", "3")
             .attr("width", function (r) {
@@ -145,7 +154,7 @@ MutNeedles.prototype.drawRegions = function(svg, regionData) {
             .attr("x", function (r) {
                 return x(r.start) + (x(r.end) - x(r.start)) / 2
             })
-            .attr("y", y(0) + 16)
+            .attr("y", y(0) + text_offset)
             .attr("dy", "0.35em")
             .style("font-size", "12px")
             .style("text-decoration", "bold")
