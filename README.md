@@ -24,7 +24,7 @@ This library is can be found as npm-library in the BioJS registry.
 Installation
 -----------------
 
-#### Install npm
+#### Install `npm`
 
 If you want to install the latest release MutNeedles on your machine, you need to have `npm` installed.
 
@@ -32,7 +32,7 @@ If you want to install the latest release MutNeedles on your machine, you need t
     * Check out the 'How to install npm' blog entry at: <http://blog.npmjs.org/post/85484771375/how-to-install-npm>
 
 
-#### Install MutNeedles
+#### Install Mutations Needle Plot (muts-needle-plot)
 
 
 Once you have `npm` installed you may install the latest release (from the npm-repository) or the develop-version
