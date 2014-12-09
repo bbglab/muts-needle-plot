@@ -1,7 +1,7 @@
 {
-  "name": "MutNeedles",
+  "name": "mut-needles",
   "description": "Draws a needle plot for mutation data. Needles at the same coordinate will be stacked",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/mpschr/MutNeedles",
   "author": {
     "name": "Michael P Schroeder",
@@ -26,9 +26,10 @@
   },
   "dependencies": {
     "biojs-events": "0.0.4",
+    "d3": "3.5.1",
+    "d3-tip": "0.6.7",
     "js-class": "0.0.2",
-    "js-extend": "0.0.2",
-    "xhr": "^1.17.0"
+    "js-extend": "0.0.2"
   },
   "devDependencies": {
     "biojs-sniper": "^0.0.4",
@@ -36,7 +37,9 @@
     "del": "^0.1.3",
     "gulp": "^3.8.8",
     "gulp-chmod": "^1.1.1",
+    "gulp-concat": "^2.3.4",
     "gulp-gzip": "0.0.8",
+    "gulp-minify-css": "^0.3.7",
     "gulp-rename": "^1.2.0",
     "gulp-streamify": "^0.0.5",
     "gulp-uglify": "^1.0.1",
@@ -48,16 +51,15 @@
   },
   "sniper": {
     "js": [
-      "//cdnjs.cloudflare.com/ajax/libs/d3/3.4.13/d3.min.js",
       "/build/mutneedles.js"
     ],
     "css" : [
-      "build/mutneedles.css"
+      "/build/mutneedles.css"
     ],
     "snippets": [
       "snippets"
     ],
-    "first": "simple_example"
+    "first": "distributedMuts"
   },
   "keywords": [
     "needle-plot",

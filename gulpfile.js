@@ -5,18 +5,17 @@
  */
 
 
-// browserify build config
-var buildDir = "build";
-var outputFile = "mutneedles";
-
 // packages
 var gulp   = require('gulp');
+var concat = require('gulp-concat');
 
 // browser builds
 var browserify = require('browserify');
 var watchify = require('watchify')
 var uglify = require('gulp-uglify');
 
+// css
+var minifyCSS = require('gulp-minify-css');
 
 
 // code style 
@@ -36,12 +35,16 @@ var join = path.join;
 var mkdirp = require('mkdirp');
 var del = require('del');
 
-// auto config
-var outputFileMin = join(buildDir,outputFile + ".min.js");
+// auto config & browserify build config
 var packageConfig = require('./package.json');
+var version = packageConfig.version;
+
+var buildDir = "build";
+var outputFile = "mutneedles";
+var outputFileMin = join(buildDir,outputFile + ".min.js");
 
 // a failing test breaks the whole build chain
-gulp.task('build', ['build-browser', 'build-browser-gzip']);
+gulp.task('build', ['build-browser', 'build-browser-gzip', 'build-css', 'build-min-css']);
 gulp.task('default', [  'build']);
 
 // will remove everything in build
@@ -55,6 +58,24 @@ gulp.task('init', ['clean'], function() {
     if (err) console.error(err)
   });
 });
+
+// build css
+gulp.task('build-css',['init'], function () {
+    return gulp.src('./src/css/*.css')
+      .pipe(concat(outputFile + '.css'))
+      .pipe(chmod(644))
+      .pipe(gulp.dest(buildDir));
+});
+
+// build css-min
+gulp.task('build-min-css',['build-css'], function () {
+   return gulp.src(join(buildDir, outputFile + '.css'))
+   .pipe(minifyCSS())
+   .pipe(rename(outputFile + '.min.css'))
+   .pipe(chmod(644))
+   .pipe(gulp.dest(buildDir));
+});
+
 
 // browserify debug
 gulp.task('build-browser',['init'], function() {
@@ -76,7 +97,8 @@ gulp.task('build-browser-min',['init'], function() {
     .pipe(streamify(uglify()))
     .pipe(gulp.dest(buildDir));
 });
- 
+
+// browserify gzip 
 gulp.task('build-browser-gzip', ['build-browser-min'], function() {
   return gulp.src(outputFileMin)
     .pipe(gzip({append: false, gzipOptions: { level: 9 }}))

@@ -8,18 +8,29 @@
  * @class
  */
 
+// import d3
+var d3 = require('d3');
+
 function MutNeedles (config) {
 
-    this.maxCoord = config.maxCoord;                    // The maximum coord (x-axis)
+
+    // Initialization
+    this.maxCoord = config.maxCoord || -1;             // The maximum coord (x-axis)
+    if (this.maxCoord < 0) { throw new Error("'maxCoord' must be defined initiation config!"); }
+
+    mutationData = config.mutationData || -1;          // .json file or dict
+    if (this.maxCoord < 0) { throw new Error("'mutationData' must be defined initiation config!"); }
+
+    regionData = config.regionData || -1;              // .json file or dict
+    if (this.maxCoord < 0) { throw new Error("'regionData' must be defined initiation config!"); }
+
     minCoord = config.minCoord || 0;                    // The minimum coord (x-axis)
     targetElement = config.targetElement || "body";     // Where to append the plot (svg)
-    mutationData = config.mutationData;                 // .json file or dict
-    regionData = config.regionData;                     // .json file or dict
     this.colorMap = config.colorMap || {};              // dict
     this.legends = config.legends || {
         "y": "Value",
         "x": "Coordinate"
-    };
+    };    
 
     this.width = width;
     this.height = height;
@@ -38,6 +49,11 @@ function MutNeedles (config) {
 
     this.buffer = buffer;
 
+    // import tips to d3
+    var d3tip = require('d3-tip');
+    d3tip(d3);    
+
+
     this.tip = d3.tip()
       .attr('class', 'd3-tip')
       .offset([-10, 0])
@@ -51,13 +67,6 @@ function MutNeedles (config) {
         .attr("class", "mutneedles");
 
     svg.call(this.tip);
-
-
-    d3.json(regionData, function(error, json) {
-        if (error) {return console.debug(error)}
-        regions = json;
-    });
-
 
     // define scales
 
@@ -313,6 +322,9 @@ MutNeedles.prototype.drawNeedles = function(svg, mutationData, regionData) {
 
     if (typeof mutationData == "string") {
         d3.json(mutationData, function(error, unformattedMuts) {
+            if (error) { 
+                 throw new Error(error); 
+            }
             muts = prepareMuts(unformattedMuts);
             paintMuts(muts);
         });
@@ -374,3 +386,6 @@ MutNeedles.prototype.drawNeedles = function(svg, mutationData, regionData) {
     }
 
 };
+
+module.exports = MutNeedles;
+
