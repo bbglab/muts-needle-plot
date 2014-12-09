@@ -1,5 +1,5 @@
-MutNeedles: D3 Needle-Plot for mutation data
-=============================================
+MutsNeedlePlot: D3 Needle-Plot for mutation data
+=================================================
 
 A needle-plot (aka stem-plot or lollipop-plot) plots each data point as a big dot and adds a vertical line that makes it appear like a needle. 
 
@@ -35,12 +35,12 @@ Once you have `npm` installed you may install the latest release (from the npm-r
 (the code from GitHub).
 
   * **Latest npm release**:
-    * ```npm install mut-needles```. This command will retrieve the latest release from the npm-repository (https://www.npmjs.org/)
-    * Enter the created directory `cd node_modules/mut-needles`.
+    * ```npm install muts-needle-plot```. This command will retrieve the latest release from the npm-repository (https://www.npmjs.org/)
+    * Enter the created directory `cd node_modules/muts-needle-plot`.
     * Run the examples (snippets) with the command `npm run sniper` and access them at the url <http://localhost:9090/snippets/> in your browser
 
   * **Latest develop version from GitHub**
-      * Clone the MutNeedles repository from your computer: ```git clone https://github.com/mpschr/MutNeedles.git```
+      * Clone the MutNeedles repository from your computer: ```git clone https://github.com/bbglab/muts-needle-plot.git```
       * Enter the newly created code dir and install it with `npm`: ```npm install```
       * Run the examples (snippets) with the command `npm run sniper` and access them at the url <http://localhost:9090/snippets/> in your browser
 

@@ -1,4 +1,4 @@
-var mutneedles = require("mut-needles");
+var mutneedles = require("muts-needle-plot");
 
 colorMap = {
   // mutation categories

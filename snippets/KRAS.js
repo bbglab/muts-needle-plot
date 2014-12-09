@@ -1,4 +1,4 @@
-var mutneedles = require("mut-needles");
+var mutneedles = require("muts-needle-plot");
 
 var target = "yourDiv"; // autmically generated in snippets examples
 var muts = "data/ENST00000557334.json";

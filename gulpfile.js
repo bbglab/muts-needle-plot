@@ -1,6 +1,6 @@
 /*
  * mutneedles
- * https://github.com/mpschr/MutNeedles
+ * https://github.com/bbglab/muts-needle-plot
  *
  */
 
