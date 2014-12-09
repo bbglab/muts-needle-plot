@@ -1,6 +1,6 @@
 /**
  *
- * Mutations Needle Plot
+ * Mutations Needle Plot (muts-needle-plot)
  *
  * Creates a needle plot (a.k.a stem plot, lolliplot and soon also balloon plot ;-)
  *
@@ -11,7 +11,7 @@
 // import d3
 var d3 = require('d3');
 
-function MutNeedles (config) {
+function MutsNeedlePlot (config) {
 
 
     // Initialization
@@ -86,7 +86,7 @@ function MutNeedles (config) {
 
 }
 
-MutNeedles.prototype.drawRegions = function(svg, regionData) {
+MutsNeedlePlot.prototype.drawRegions = function(svg, regionData) {
 
     var maxCoord = this.maxCoord;
     var buffer = this.buffer;
@@ -201,7 +201,7 @@ MutNeedles.prototype.drawRegions = function(svg, regionData) {
 };
 
 
-MutNeedles.prototype.drawAxes = function(svg) {
+MutsNeedlePlot.prototype.drawAxes = function(svg) {
 
     var y = this.y;
     var x = this.x;
@@ -237,7 +237,7 @@ MutNeedles.prototype.drawAxes = function(svg) {
 
 
 
-MutNeedles.prototype.needleHeadColor = function(category, colors) {
+MutsNeedlePlot.prototype.needleHeadColor = function(category, colors) {
 
     if (category in colors) {
         return this.colors[category];
@@ -246,7 +246,7 @@ MutNeedles.prototype.needleHeadColor = function(category, colors) {
     }
 };
 
-MutNeedles.prototype.drawNeedles = function(svg, mutationData, regionData) {
+MutsNeedlePlot.prototype.drawNeedles = function(svg, mutationData, regionData) {
 
     var y = this.y;
     var x = this.x;
@@ -387,5 +387,5 @@ MutNeedles.prototype.drawNeedles = function(svg, mutationData, regionData) {
 
 };
 
-module.exports = MutNeedles;
+module.exports = MutsNeedlePlot;
 

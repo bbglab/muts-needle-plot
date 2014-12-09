@@ -1,5 +1,5 @@
 /*
- * mutneedles
+ * MutsNeedlePlot
  * https://github.com/bbglab/muts-needle-plot
  *
  */
@@ -40,7 +40,7 @@ var packageConfig = require('./package.json');
 var version = packageConfig.version;
 
 var buildDir = "build";
-var outputFile = "mutneedles";
+var outputFile = "muts-needle-plot";
 var outputFileMin = join(buildDir,outputFile + ".min.js");
 
 // a failing test breaks the whole build chain
@@ -89,7 +89,7 @@ gulp.task('build-browser',['init'], function() {
 
 // browserify min
 gulp.task('build-browser-min',['init'], function() {
-  var b = browserify({hasExports: true, standalone: "mutneedles"});
+  var b = browserify({hasExports: true, standalone: "muts-needle-plot"});
   exposeBundles(b);
   return b.bundle()
     .pipe(source(outputFile + ".min.js"))

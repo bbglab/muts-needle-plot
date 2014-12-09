@@ -1,18 +1,14 @@
-MutsNeedlePlot: D3 Needle-Plot for mutation data
+Mutations Needle Plot (muts-needle-plot)
 =================================================
 
 A needle-plot (aka stem-plot or lollipop-plot) plots each data point as a big dot and adds a vertical line that makes it appear like a needle. 
 
-http://nodejs.org/
-
 Examples (snippets)
 ----------------------
 
-This library is currently under development and will be added to BioJS when complete.
+This library is currently under development and will be added to the as npm-library to the BioJS registry.
 
-<http://biojs.net/>
-
-Live examples can bee seen at the biojs.net registry.
+Live examples can bee seen at the biojs.net registry: <http://biojs.net/>
 
 ![Image of a Needle-Plot](mutneedles.png)
 

@@ -51,10 +51,10 @@
   },
   "sniper": {
     "js": [
-      "/build/mutneedles.js"
+      "/build/muts-needle-plot.js"
     ],
     "css" : [
-      "/build/mutneedles.css"
+      "/build/muts-needle-plot.css"
     ],
     "snippets": [
       "snippets"
