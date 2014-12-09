@@ -28,8 +28,3 @@ git push origin --tags
 npm publish
 
 
-6. Prepare the release of next version
-
-change 0.2.1 to 0.3.0-dev in the `package.json` file
-git commit -a -m "setting dev version 0.3.0-dev"
-
