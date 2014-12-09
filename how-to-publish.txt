@@ -23,7 +23,10 @@ git tag -a v0.2.0 -m 'version 0.2.0'
 git push origin --tags
 
 
-5. Publish the npm-module and follow the instructions given by the publish command
+5. Publish the npm-module as 'bbglab' follow the instructions given by the publish command
 
 npm publish
+
+
+6. Prepare the release of next version
 
