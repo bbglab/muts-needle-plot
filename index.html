@@ -12,6 +12,7 @@ text {
 </style>
 
 <body>
+<div id="yourDiv"> </div>
 
 <script src="build/muts-needle-plot.js"></script>
 <script>
@@ -37,7 +38,8 @@ text {
     plotConfig = {
         maxCoord :      350,
         minCoord :      0,
-        targetElement : "body",
+        height:         450,
+        targetElement : "yourDiv",
         mutationData:   "snippets/data/muts.json",
         //mutationData:   [{"category": "test", "coord": "99", "value": 77}],
         regionData:     "snippets/data/regions.json",

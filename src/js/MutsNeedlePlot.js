@@ -2,42 +2,47 @@
  *
  * Mutations Needle Plot (muts-needle-plot)
  *
- * Creates a needle plot (a.k.a stem plot, lolliplot and soon also balloon plot ;-)
+ * Creates a needle plot (a.k.a stem plot, lollipop-plot and soon also balloon plot ;-)
+ * This class uses the npm-require module to load dependencies d3, d3-tip
  *
  * @author Michael P Schroeder
  * @class
  */
 
-// import d3
+// npm import d3
 var d3 = require('d3');
 
 function MutsNeedlePlot (config) {
 
 
     // Initialization
+
+    // X-coordinates
     this.maxCoord = config.maxCoord || -1;             // The maximum coord (x-axis)
     if (this.maxCoord < 0) { throw new Error("'maxCoord' must be defined initiation config!"); }
+    this.minCoord = config.minCoord || 1;               // The minimum coord (x-axis)
 
+    // data
     mutationData = config.mutationData || -1;          // .json file or dict
     if (this.maxCoord < 0) { throw new Error("'mutationData' must be defined initiation config!"); }
-
     regionData = config.regionData || -1;              // .json file or dict
     if (this.maxCoord < 0) { throw new Error("'regionData' must be defined initiation config!"); }
 
-    minCoord = config.minCoord || 0;                    // The minimum coord (x-axis)
-    targetElement = config.targetElement || "body";     // Where to append the plot (svg)
+    // Plot dimensions & target
+    var targetElement = document.getElementById(config.targetElement) || config.targetElement || document.body   // Where to append the plot (svg)
+
+    var width = this.width = config.width || targetElement.offsetWidth || 1000;
+    var height = this.height = config.height || targetElement.offsetHeight || 500;
+
+    // Misc
     this.colorMap = config.colorMap || {};              // dict
     this.legends = config.legends || {
         "y": "Value",
         "x": "Coordinate"
-    };    
+    };
 
-    this.width = width;
-    this.height = height;
     this.buffer = 0;
 
-    var width = this.width = 1000;
-    var height = this.height = 500;
     var maxCoord = this.maxCoord;
 
     var buffer = 0;
@@ -71,8 +76,8 @@ function MutsNeedlePlot (config) {
     // define scales
 
     var x = d3.scale.linear()
-      .domain([1, maxCoord])
-      .range([buffer, width - buffer * 1.5])
+      .domain([this.minCoord, this.maxCoord])
+      .range([buffer * 1.5 , width - buffer])
       .nice();
     this.x = x;
 
@@ -122,22 +127,24 @@ MutsNeedlePlot.prototype.drawRegions = function(svg, regionData) {
         text_offset = bg_offset+5;
     }
 
-    var regionsBG = d3.select(".mutneedles").selectAll()
-        .data([1]).enter()
-        .append("rect")
-          .attr("x", x(0) )
-          .attr("y", y(0) + bg_offset )
-          .attr("width", x(maxCoord) - x(0) )
-          .attr("height", 10)
-          .attr("class", "regionsBG");
-
     function draw(regionList) {
 
-        var regions = d3.select(".mutneedles").selectAll()
+        var regionsBG = d3.select(".mutneedles").selectAll()
+            .data(["dummy"]).enter()
+            .insert("g", ":first-child")
+            .attr("class", "regionsBG")
+            .append("rect")
+            .attr("x", x(0) )
+            .attr("y", y(0) + bg_offset )
+            .attr("width", x(maxCoord) - x(0) )
+            .attr("height", 10);
+
+
+        var regions = regionsBG = d3.select(".mutneedles").selectAll()
             .data(regionList)
             .enter()
             .append("g")
-            .attr("class", "region");
+            .attr("class", "regionGroup");
 
         regions.append("rect")
             .attr("x", function (r) {
@@ -218,7 +225,7 @@ MutsNeedlePlot.prototype.drawAxes = function(svg) {
 
     svg.append("svg:g")
       .attr("class", "y-axis")
-      .attr("transform", "translate(" + (this.buffer + - 10)  + ",0)")
+      .attr("transform", "translate(" + (this.buffer * 1.2 + - 10)  + ",0)")
       .call(yAxis);
 
     svg.append("text")
@@ -255,7 +262,7 @@ MutsNeedlePlot.prototype.drawNeedles = function(svg, mutationData, regionData) {
     getYAxis = function() {
         return y;
     };
- 
+
     formatCoord = function(coord) {
        if (coord.indexOf("-") > -1) {
             coords = coord.split("-");
@@ -270,7 +277,7 @@ MutsNeedlePlot.prototype.drawNeedles = function(svg, mutationData, regionData) {
     getColor = this.needleHeadColor;
     colors = this.colorMap;
     tip = this.tip;
-    
+
     // stack needles at same pos
     needlePoint = {};
     highest = 0;
@@ -322,8 +329,8 @@ MutsNeedlePlot.prototype.drawNeedles = function(svg, mutationData, regionData) {
 
     if (typeof mutationData == "string") {
         d3.json(mutationData, function(error, unformattedMuts) {
-            if (error) { 
-                 throw new Error(error); 
+            if (error) {
+                 throw new Error(error);
             }
             muts = prepareMuts(unformattedMuts);
             paintMuts(muts);

@@ -2,7 +2,7 @@ Make sure you have npm installed.
 --------------------------------------
 
 
-1. Check and increment the version in the `package.json` file. E.g. version "0.2.1"
+1. Check and increment the version in the `package.json` file. E.g. version "0.4.0"
 
 2. Check if examples are working fine
 
@@ -14,12 +14,12 @@ access http://localhost:9090/snippets/ and see the examples
 3. Pull from repository, commit all changes, push to repository:
 
 git pull
-git commit -a -m "Preparing release of version 0.2.1"
+git commit -a -m "Preparing release of version 0.4.0"
 git push
 
 
 4. Add a git tag with the same version as in the package.json file.
-git tag -a v0.2.1 -m 'version 0.2.1'
+git tag -a v0.4.0 -m 'version 0.4.0'
 git push origin --tags
 
 

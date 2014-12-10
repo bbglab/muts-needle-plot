@@ -1,4 +1,6 @@
-
+body {
+    font-family: Verdana,Geneva,sans-serif;
+}
 
 .needle-line {
     stroke: black;
@@ -16,6 +18,11 @@
 
 .x-axis path, .x-axis line, .y-axis path, .y-axis line {
     fill: none;
+}
+
+.x-label, .y-label {
+    font-weight: bold;
+    font-size: 12px;
 }
 
 .domain {
