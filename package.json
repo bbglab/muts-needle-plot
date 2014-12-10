@@ -1,7 +1,7 @@
 {
   "name": "muts-needle-plot",
-  "description": "Draws a needle plot for mutation data. Needles at the same coordinate will be stacked. Needle plots are also knonw as lollipop plots or stem plots.",
-  "version": "0.3.1",
+  "description": "Draws a (stacked) Needle-Plot for mutation data.",
+  "version": "0.3.2",
   "homepage": "https://github.com/bbglab/muts-needle-plot",
   "author": {
     "name": "Michael P Schroeder",
@@ -63,10 +63,12 @@
   },
   "keywords": [
     "needle-plot",
-    "biojs",
     "mutations",
-    "lolliplot",
+    "visualization",
+    "plot",
     "lollipop-plot",
-    "stem-plot"
+    "stem-plot",
+    "genomics",
+    "biojs"
   ]
 }
