@@ -3,6 +3,7 @@ Mutations Needle Plot (muts-needle-plot)
 
 A needle-plot (aka stem-plot or lollipop-plot) plots each data point as a big dot and adds a vertical line that makes it appear like a needle. 
 
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.13185.svg)](http://dx.doi.org/10.5281/zenodo.13185)
 
 Availability
 -----------------------
