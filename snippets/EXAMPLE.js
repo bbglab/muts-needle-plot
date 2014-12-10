@@ -1,3 +1,7 @@
+// BioJS-Sniper creates the DOM-element yourDiv by default
+yourDiv.innerHTML = '';
+
+// import our plot-library
 var mutneedles = require("muts-needle-plot");
 
 colorMap = {
@@ -21,10 +25,10 @@ legends = {
 plotConfig = {
   maxCoord :      350,
   minCoord :      0,
-  targetElement : "body",
-  mutationData:   "data/muts.json",
+  targetElement : yourDiv,
+  mutationData:   "./data/muts.json",
   //mutationData:   [{"category": "test", "coord": "99", "value": 77}],
-  regionData:     "data/regions.json",
+  regionData:     "./data/regions.json",
   //regionData:     {"beautiful-region": "99-199"},
   colorMap:       colorMap,
   legends:        legends
