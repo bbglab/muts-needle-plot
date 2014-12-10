@@ -11,20 +11,21 @@ npm run sniper
 
 access http://localhost:9090/snippets/ and see the examples
 
-3. Pull from repository, commit all changes, push to repository:
+3. Pull from repository:
 
 git pull
-git commit -a -m "Preparing release of version 0.4.0"
-git push
 
 
 4. Add a git tag with the same version as in the package.json file.
 git tag -a v0.4.0 -m 'version 0.4.0'
-git push origin --tags
 
 
 5. Publish the npm-module as 'bbglab' follow the instructions given by the publish command
 
 npm publish
 
+6. Commit all changes, push to repository 
+git commit -a -m "Release of version 0.4.0"
+git push
+git push origin --tags
 
