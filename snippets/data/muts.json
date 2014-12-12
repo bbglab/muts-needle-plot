@@ -30,10 +30,6 @@
     "value":3
   },
   {
-    "coord":"45",
-    "value":1
-  },
-  {
     "coord":"60-61",
     "category":"frameshift_variant",
     "value":1
@@ -100,13 +96,13 @@
   },
   {
     "coord":"73",
-    "category":"frameshift_variant",
-    "value":1
+    "category":"stop_gained",
+    "value":3
   },
   {
     "coord":"73",
-    "category":"stop_gained",
-    "value":3
+    "category":"frameshift_variant",
+    "value":1
   },
   {
     "coord":"74",
