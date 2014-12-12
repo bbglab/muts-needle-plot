@@ -28,3 +28,8 @@ Make sure you have npm installed.
     git push
     git push origin --tags
 
+6. Go to GitHub and schedule a new Release
+    Title: Mutations Needle Plot
+    Changelog:
+    v0.4.2
+    Includes some bug-fixes.
