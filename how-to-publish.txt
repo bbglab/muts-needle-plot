@@ -2,30 +2,29 @@ Make sure you have npm installed.
 --------------------------------------
 
 
-1. Check and increment the version in the `package.json` file. E.g. version "0.4.0"
+1. Pull from repository:
 
-2. Check if examples are working fine
+    git pull
 
-npm install (or gulp build)
-npm run sniper
+2. Check and increment the version in the `package.json` file. E.g. version "0.4.1"
 
-access http://localhost:9090/snippets/ and see the examples
+3. Check if examples are working fine
 
-3. Pull from repository:
+    npm install (or gulp build)
+    npm run sniper
 
-git pull
-
-
-4. Add a git tag with the same version as in the package.json file.
-git tag -a v0.4.0 -m 'version 0.4.0'
+    access http://localhost:9090/snippets/ and see the examples
 
 
-5. Publish the npm-module as 'bbglab' follow the instructions given by the publish command
+4. Publish the npm-module as 'bbglab' follow the instructions given by the publish command
 
-npm publish
+    npm publish
 
-6. Commit all changes, push to repository 
-git commit -a -m "Release of version 0.4.0"
-git push
-git push origin --tags
+
+5. Commit all changes, push to repository
+
+    git commit -a -m "Release of version 0.4.1"
+    git tag -a v0.4.1 -m 'version 0.4.1'
+    git push
+    git push origin --tags
 

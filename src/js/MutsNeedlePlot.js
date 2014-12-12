@@ -63,7 +63,7 @@ function MutsNeedlePlot (config) {
       .attr('class', 'd3-tip')
       .offset([-10, 0])
       .html(function(d) {
-        return "<span>" + d.value + " " + d.category +  " at " + d.coordString + "</span>";
+        return "<span>" + d.value + " " + d.category +  " at coord. " + d.coordString + "</span>";
       });
 
     var svg = d3.select(targetElement).append("svg")
@@ -94,6 +94,7 @@ function MutsNeedlePlot (config) {
 MutsNeedlePlot.prototype.drawRegions = function(svg, regionData) {
 
     var maxCoord = this.maxCoord;
+    var minCoord = this.minCoord;
     var buffer = this.buffer;
     var colors = this.colorMap;
     var y = this.y;
@@ -134,9 +135,9 @@ MutsNeedlePlot.prototype.drawRegions = function(svg, regionData) {
             .insert("g", ":first-child")
             .attr("class", "regionsBG")
             .append("rect")
-            .attr("x", x(0) )
+            .attr("x", x(minCoord) )
             .attr("y", y(0) + bg_offset )
-            .attr("width", x(maxCoord) - x(0) )
+            .attr("width", x(maxCoord) - x(minCoord) )
             .attr("height", 10);
 
 

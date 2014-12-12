@@ -50,6 +50,9 @@
     "vinyl-source-stream": "^1.0.0",
     "watchify": "^1.0.6"
   },
+  "biojs": {
+    "logo": "/"
+  },
   "sniper": {
     "js": [
       "/build/muts-needle-plot.js",
