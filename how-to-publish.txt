@@ -6,7 +6,7 @@ Make sure you have npm installed.
 
     git pull
 
-2. Check and increment the version in the `package.json` file. E.g. version "0.4.1"
+2. Check and increment the version in the `package.json` file. E.g. version "0.4.2"
 
 3. Check if examples are working fine
 
@@ -23,8 +23,8 @@ Make sure you have npm installed.
 
 5. Commit all changes, push to repository
 
-    git commit -a -m "Release of version 0.4.1"
-    git tag -a v0.4.1 -m 'version 0.4.1'
+    git commit -a -m "Release of version 0.4.2"
+    git tag -a v0.4.2 -m 'version 0.4.2'
     git push
     git push origin --tags
 

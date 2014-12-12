@@ -9,11 +9,7 @@
  * @class
  */
 
-// npm import d3
-var d3 = require('d3');
-
 function MutsNeedlePlot (config) {
-
 
     // Initialization
 
