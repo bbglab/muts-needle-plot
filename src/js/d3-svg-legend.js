@@ -1,26 +1,75 @@
-/**
- * Found at
- * https://github.com/emeeks/d3-svg-legend
- * with free license
- *
- * @returns {legend}
- */
-
 d3.svg.legend = function() {
 
     var legendValues=[{color: "red", stop: [0,1]},{color: "blue", stop: [1,2]},{color: "purple", stop: [2,3]},{color: "yellow", stop: [3,4]},{color: "Aquamarine", stop: [4,5]}];
     var legendScale;
     var cellWidth = 30;
     var cellHeight = 20;
-    var adjustable = true;
+    var adjustable = false;
     var labelFormat = d3.format(".01f");
+    var coordinates = {x:0, y:0};
     var labelUnits = "units";
     var lastValue = 6;
     var changeValue = 1;
     var orientation = "horizontal";
     var cellPadding = 0;
 
-    function legend(g) {
+
+    var initDone = false;
+    var target;
+
+    function legend(svg) {
+
+        updateMutLegend = function(){
+
+            dim = d3.select(".mutLegendGroup").node().getBBox();
+
+            var margin = 10;
+            dim = target.node().getBBox();
+            dim.height += margin * 2;
+            dim.width += margin * 2;
+            dim.y -= margin;
+            dim.x -= margin;
+
+            d3.select(".mutLegendBG")
+                .attr(dim)
+        };
+
+        function init() {
+            var mutLegendGroup = svg.append("g")
+                .attr("class", "mutLegendGroup")
+                .data([ coordinates ])
+                .attr("transform", "translate(" + coordinates.x + "," + coordinates.y + ")");
+            var g = mutLegendGroup
+                .insert("g")
+                .attr("class", "mutLegendGroupText");
+
+
+            // set legend background
+            var mutLegendBG = mutLegendGroup
+                .insert("rect", ":first-child")
+                .attr("class", "mutLegendBG")
+                .attr("fill", "white")
+                .attr("stroke", "black")
+                .attr("stroke-width", "1px");
+
+
+            var drag = d3.behavior.drag()
+                .on("drag", function(d,i) {
+                    d.x += d3.event.dx;
+                    d.y += d3.event.dy;
+                    d3.select(this).attr("transform", function(d,i){
+                        return "translate(" + [ d.x,d.y ] + ")"
+                    })
+                })
+                .on("dragstart", function() {
+                    d3.event.sourceEvent.stopPropagation(); // silence other listeners
+                });
+
+            mutLegendGroup.call(drag);
+            // target
+            return g;
+        };
+
 
         function cellRange(valuePosition, changeVal) {
             legendValues[valuePosition].stop[0] += changeVal;
@@ -30,29 +79,37 @@ d3.svg.legend = function() {
 
         function redraw() {
 
-            g.selectAll("g.legendCells").data(legendValues).exit().remove();
-            g.selectAll("g.legendCells").select("rect").style("fill", function(d) {return d.color});
+
+            target.selectAll("g.legendCells").data(legendValues).exit().remove();
+            target.selectAll("g.legendCells").select("rect").style("fill", function(d) {return d.color});
             if (orientation == "vertical") {
-                g.selectAll("g.legendCells").select("text.breakLabels").style("display", "block").style("text-anchor", "start").attr("x", cellWidth + cellPadding).attr("y", 5 + (cellHeight / 2)).text(function(d) {return labelFormat(d.stop[0]) + (d.stop[1].length > 0 ? " - " + labelFormat(d.stop[1]) : "")})
-                g.selectAll("g.legendCells").attr("transform", function(d,i) {return "translate(0," + (i * (cellHeight + cellPadding)) + ")" });
+                target.selectAll("g.legendCells").select("text.breakLabels").style("display", "block").style("text-anchor", "start").attr("x", cellWidth + cellPadding).attr("y", 5 + (cellHeight / 2)).text(function(d) {return labelFormat(d.stop[0]) + (d.stop[1].length > 0 ? " - " + labelFormat(d.stop[1]) : "")})
+                target.selectAll("g.legendCells").attr("transform", function(d,i) {return "translate(0," + (i * (cellHeight + cellPadding)) + ")" });
             }
             else {
-                g.selectAll("g.legendCells").attr("transform", function(d,i) {return "translate(" + (i * cellWidth) + ",0)" });
-                g.selectAll("text.breakLabels").style("text-anchor", "middle").attr("x", 0).attr("y", -7).style("display", function(d,i) {return i == 0 ? "none" : "block"}).text(function(d) {return labelFormat(d.stop[0])});
+                target.selectAll("g.legendCells").attr("transform", function(d,i) {return "translate(" + (i * cellWidth) + ",0)" });
+                target.selectAll("text.breakLabels").style("text-anchor", "middle").attr("x", 0).attr("y", -7).style("display", function(d,i) {return i == 0 ? "none" : "block"}).text(function(d) {return labelFormat(d.stop[0])});
             }
         }
 
+        // init
+        if (!initDone) {
+            target = init();
+            initDone = true;
+        }
+
+
         // remove previously painted rect and text
-        g.selectAll("g.legendCells").select("text.breakLabels").remove();
-        g.selectAll("g.legendCells").select("rect").remove();
-        g.selectAll("g.legendCells")
+        target.selectAll("g.legendCells").select("text.breakLabels").remove();
+        target.selectAll("g.legendCells").select("rect").remove();
+        target.selectAll("g.legendCells")
             .data(legendValues)
             .enter()
             .append("g")
             .attr("class", "legendCells")
             .attr("transform", function(d,i) {return "translate(" + (i * (cellWidth + cellPadding)) + ",0)" })
 
-        g.selectAll("g.legendCells")
+        target.selectAll("g.legendCells")
             .append("rect")
             .attr("class", "breakRect")
             .attr("height", cellHeight)
@@ -60,17 +117,18 @@ d3.svg.legend = function() {
             .style("fill", function(d) {return d.color})
             .style("stroke", function(d) {return d3.rgb(d.color).darker();});
 
-        g.selectAll("g.legendCells")
+        target.selectAll("g.legendCells")
             .append("text")
             .attr("class", "breakLabels")
             .style("pointer-events", "none");
 
-        g.append("text")
+        target.append("text")
             .text(labelUnits)
             .attr("y", -7)
             .attr("class", "legendTitle");
 
         redraw();
+        updateMutLegend(this);
     }
 
     legend.inputScale = function(newScale) {
@@ -153,6 +211,12 @@ d3.svg.legend = function() {
         if (incFormat == "none") {
             labelFormat = function(inc) {return inc};
         }
+        return this;
+    }
+
+    legend.place = function(incCoordinates) {
+        if (!arguments.length) return incCoordinates;
+        coordinates = incCoordinates;
         return this;
     }
 

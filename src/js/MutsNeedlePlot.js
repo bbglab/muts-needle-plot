@@ -173,61 +173,16 @@ function MutsNeedlePlot (config) {
         .cellWidth(20)
         .cellHeight(12)
         .inputScale(this.colorScale)
-        .cellStepping(4);
-
-    this.updateMutLegend = function(legendObj){
-
-        svg.call(legendObj);
-
-        dim = d3.select(".mutLegendGroup").node().getBBox();
-
-        var margin = 10;
-        dim = mutLegendGroupText.node().getBBox();
-        dim.height += margin * 2;
-        dim.width += margin * 2;
-        dim.y -= margin;
-        dim.x -= margin;
-
-        d3.select(".mutLegendBG")
-            .attr(dim)
-    };
-
-    var mutLegendGroup = svg.append("g")
-          .attr("class", "mutLegendGroup")
-          .data([ {"x":800, "y":50} ])
-          .attr("transform", "translate(800,50)");
-    var mutLegendGroupText = mutLegendGroup
-        .insert("g")
-          .attr("class", "mutLegendGroupText")
-          .call(verticalLegend);
-
-    // set legend background
-    var mutLegendBG = mutLegendGroup
-        .insert("rect", ":first-child")
-        .attr("class", "mutLegendBG")
-        .attr("fill", "white")
-        .attr("stroke", "black")
-        .attr("stroke-width", "1px");
-    this.updateMutLegend(verticalLegend)
+        .cellStepping(4)
+        .place({x: 800, y: 50});
 
 
-    var drag = d3.behavior.drag()
-        .on("drag", function(d,i) {
-            d.x += d3.event.dx;
-            d.y += d3.event.dy;
-            d3.select(this).attr("transform", function(d,i){
-                return "translate(" + [ d.x,d.y ] + ")"
-            })
-        })
-        .on("dragstart", function() {
-            d3.event.sourceEvent.stopPropagation(); // silence other listeners
-        });
+    svg.call(verticalLegend);
 
-    mutLegendGroup.call(drag);
 
     self.on("onNeedleSelectionChange", function (edata) {
         self.categCounts = edata.categCounts;
-        self.updateMutLegend(verticalLegend);
+        svg.call(verticalLegend);
     });
 
 
