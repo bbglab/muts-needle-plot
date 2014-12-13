@@ -68,6 +68,11 @@ body {
     border-radius: 6px;
 }
 
+.d3-tip-selection {
+    font-size: 12px;
+    text-align: center;
+}
+
 /* Creates a small triangle extender for the tooltip */
 .d3-tip:after {
     box-sizing: border-box;

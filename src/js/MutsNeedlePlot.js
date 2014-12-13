@@ -66,11 +66,19 @@ function MutsNeedlePlot (config) {
 
 
     this.tip = d3.tip()
-      .attr('class', 'd3-tip')
+      .attr('class', 'd3-tip d3-tip-needle')
       .offset([-10, 0])
       .html(function(d) {
         return "<span>" + d.value + " " + d.category +  " at coord. " + d.coordString + "</span>";
       });
+
+    this.selectionTip = d3.tip()
+        .attr('class', 'd3-tip d3-tip-selection')
+        .offset([100, 0])
+        .html(function(d) {
+            return "<span> Selected coordinates<br/>" + Math.round(d.left) + " - " + Math.round(d.right) + "</span>";
+        })
+        .direction('n');
 
     // INIT SVG
 
@@ -80,6 +88,7 @@ function MutsNeedlePlot (config) {
         .attr("class", this.svgClasses);
 
     svg.call(this.tip);
+    svg.call(this.selectionTip);
 
     // DEFINE SCALES
 
@@ -102,21 +111,17 @@ function MutsNeedlePlot (config) {
         .on("brushend", brushend);
 
     this.svgClasses += " brush";
-    svg
-        .attr("class", this.svgClasses)
+    var selectionRect = svg.attr("class", this.svgClasses)
         .call(brush)
         .selectAll('.extent')
         .attr('height', height);
-
-    /// DRAW
-    this.drawNeedles(svg, mutationData, regionData);
 
     selectedNeedles = [];
     var categCounts = {};
     function brushmove() {
 
         var extent = brush.extent();
-        needleHeads = d3.selectAll(".needle-head");;
+        needleHeads = d3.selectAll(".needle-head");
         selectedNeedles = [];
         categCounts = {};
 
@@ -128,14 +133,20 @@ function MutsNeedlePlot (config) {
             }
             return is_brushed;
         });
-    }
 
+        self.trigger('onNeedleSelectionChange', {
+            selected : selectedNeedles,
+            categCounts: categCounts,
+            coords: extent
+        });
+    }
 
     function brushend() {
         get_button = d3.select(".clear-button");
         self.trigger('onNeedleSelectionChange', {
-            data : selectedNeedles,
-            categCounts: categCounts
+            selected : selectedNeedles,
+            categCounts: categCounts,
+            coords: brush.extent()
         });
         /*if(get_button.empty() === true) {
          clear_button = svg.append('text')
@@ -161,6 +172,9 @@ function MutsNeedlePlot (config) {
          });*/
     }
 
+    /// DRAW
+    this.drawNeedles(svg, mutationData, regionData);
+
 
     // LEGEND
     self = this;
@@ -183,7 +197,17 @@ function MutsNeedlePlot (config) {
     self.on("onNeedleSelectionChange", function (edata) {
         self.categCounts = edata.categCounts;
         svg.call(verticalLegend);
+
     });
+
+    self.on("onNeedleSelectionChange", function(edata) {
+            selection = edata.coords;
+            if (selection[1] - selection[0] > 10) {
+                self.selectionTip.show({left: selection[0], right: selection[1]}, selectionRect.node());
+            } else {
+                self.selectionTip.hide();
+            }
+        });
 
 
 
