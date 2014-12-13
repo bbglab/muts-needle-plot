@@ -95,8 +95,6 @@ function MutsNeedlePlot (config) {
       .nice();
     this.y = y;
 
-    this.drawNeedles(svg, mutationData, regionData);
-
     // CONFIGURE BRUSH
     var brush = d3.svg.brush()
         .x(x)
@@ -109,6 +107,9 @@ function MutsNeedlePlot (config) {
         .call(brush)
         .selectAll('.extent')
         .attr('height', height);
+
+    /// DRAW
+    this.drawNeedles(svg, mutationData, regionData);
 
     selectedNeedles = [];
     var categCounts = {};
