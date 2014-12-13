@@ -13,6 +13,8 @@ function MutsNeedlePlot (config) {
 
     // INITIALIZATION
 
+    var self = this;        // self = MutsNeedlePlot
+
     // X-coordinates
     this.maxCoord = config.maxCoord || -1;             // The maximum coord (x-axis)
     if (this.maxCoord < 0) { throw new Error("'maxCoord' must be defined initiation config!"); }
@@ -33,7 +35,7 @@ function MutsNeedlePlot (config) {
     // Color scale & map
     this.colorMap = config.colorMap || {};              // dict
     var colors = Object.keys(this.colorMap).map(function (key) {
-        return this.colorMap[key];
+        return self.colorMap[key];
     });
     this.colorScale = d3.scale.category20()
         .domain(Object.keys(this.colorMap))
@@ -105,7 +107,7 @@ function MutsNeedlePlot (config) {
     svg
         .attr("class", this.svgClasses)
         .call(brush)
-        .selectAll('rect')
+        .selectAll('.extent')
         .attr('height', height);
 
     selectedNeedles = [];
@@ -128,7 +130,6 @@ function MutsNeedlePlot (config) {
     }
 
 
-    var self = this;        // self = MutsNeedlePlot
     function brushend() {
         get_button = d3.select(".clear-button");
         self.trigger('onNeedleSelectionChange', {
