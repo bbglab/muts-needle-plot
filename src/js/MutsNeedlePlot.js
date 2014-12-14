@@ -134,7 +134,7 @@ function MutsNeedlePlot (config) {
             return is_brushed;
         });
 
-        self.trigger('onNeedleSelectionChange', {
+        self.trigger('needleSelectionChange', {
             selected : selectedNeedles,
             categCounts: categCounts,
             coords: extent
@@ -143,7 +143,7 @@ function MutsNeedlePlot (config) {
 
     function brushend() {
         get_button = d3.select(".clear-button");
-        self.trigger('onNeedleSelectionChange', {
+        self.trigger('needleSelectionChangeEnd', {
             selected : selectedNeedles,
             categCounts: categCounts,
             coords: brush.extent()
@@ -194,13 +194,13 @@ function MutsNeedlePlot (config) {
     svg.call(verticalLegend);
 
 
-    self.on("onNeedleSelectionChange", function (edata) {
+    self.on("needleSelectionChange", function (edata) {
         self.categCounts = edata.categCounts;
         svg.call(verticalLegend);
 
     });
 
-    self.on("onNeedleSelectionChange", function(edata) {
+    self.on("needleSelectionChange", function(edata) {
             selection = edata.coords;
             if (selection[1] - selection[0] > 10) {
                 self.selectionTip.show({left: selection[0], right: selection[1]}, selectionRect.node());
