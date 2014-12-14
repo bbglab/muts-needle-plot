@@ -26,6 +26,8 @@ function MutsNeedlePlot (config) {
     regionData = config.regionData || -1;              // .json file or dict
     if (this.maxCoord < 0) { throw new Error("'regionData' must be defined initiation config!"); }
     this.totalCategCounts = {};
+    this.categCounts = {};
+    this.selectedNeedles = [];
 
     // Plot dimensions & target
     var targetElement = document.getElementById(config.targetElement) || config.targetElement || document.body   // Where to append the plot (svg)
@@ -45,7 +47,6 @@ function MutsNeedlePlot (config) {
         "y": "Value",
         "x": "Coordinate"
     };
-    this.categCounts = {};
 
     this.svgClasses = "mutneedles"
     this.buffer = 0;
@@ -117,13 +118,15 @@ function MutsNeedlePlot (config) {
         .selectAll('.extent')
         .attr('height', height);
 
-    selectedNeedles = [];
     function brushmove() {
 
         var extent = brush.extent();
         needleHeads = d3.selectAll(".needle-head");
         selectedNeedles = [];
         categCounts = {};
+        for (key in Object.keys(self.totalCategCounts)) {
+            categCounts[key] = 0;
+        }
 
         needleHeads.classed("selected", function(d) {
             is_brushed = extent[0] <= d.coord && d.coord <= extent[1];
@@ -135,7 +138,7 @@ function MutsNeedlePlot (config) {
         });
 
         self.trigger('needleSelectionChange', {
-            selected : selectedNeedles,
+        selected : selectedNeedles,
             categCounts: categCounts,
             coords: extent
         });
@@ -178,8 +181,14 @@ function MutsNeedlePlot (config) {
 
     self.on("needleSelectionChange", function (edata) {
         self.categCounts = edata.categCounts;
+        self.selectedNeedles = edata.selected;
         svg.call(verticalLegend);
+    });
 
+    self.on("needleSelectionChangeEnd", function (edata) {
+        self.categCounts = edata.categCounts;
+        self.selectedNeedles = edata.selected;
+        svg.call(verticalLegend);
     });
 
     self.on("needleSelectionChange", function(edata) {
@@ -204,7 +213,7 @@ MutsNeedlePlot.prototype.drawLegend = function(svg) {
     xplacement = (domain[1] - domain[0]) * 0.75 + (domain[1] - domain[0]);
     verticalLegend = d3.svg
         .legend()
-        .labelFormat(function(l) { return (self.categCounts[l] || "") + " " + l; })
+        .labelFormat(function(l) { return (self.categCounts[l] || (self.selectedNeedles.length == 0 && self.totalCategCounts[l]) || "") + " " + l; })
         .cellPadding(4)
         .orientation("vertical")
         .units("Mutations")
