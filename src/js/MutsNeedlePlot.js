@@ -25,6 +25,7 @@ function MutsNeedlePlot (config) {
     if (this.maxCoord < 0) { throw new Error("'mutationData' must be defined initiation config!"); }
     regionData = config.regionData || -1;              // .json file or dict
     if (this.maxCoord < 0) { throw new Error("'regionData' must be defined initiation config!"); }
+    this.totalCategCounts = {};
 
     // Plot dimensions & target
     var targetElement = document.getElementById(config.targetElement) || config.targetElement || document.body   // Where to append the plot (svg)
@@ -62,7 +63,7 @@ function MutsNeedlePlot (config) {
 
     // IIMPORT AND CONFIGURE TIPS
     var d3tip = require('d3-tip');
-    d3tip(d3);    
+    d3tip(d3);
 
 
     this.tip = d3.tip()
@@ -117,7 +118,6 @@ function MutsNeedlePlot (config) {
         .attr('height', height);
 
     selectedNeedles = [];
-    var categCounts = {};
     function brushmove() {
 
         var extent = brush.extent();
@@ -176,24 +176,6 @@ function MutsNeedlePlot (config) {
     this.drawNeedles(svg, mutationData, regionData);
 
 
-    // LEGEND
-    self = this;
-    verticalLegend = d3.svg
-        .legend()
-        .labelFormat(function(l) { return (self.categCounts[l] || "") + " " + l; })
-        .cellPadding(4)
-        .orientation("vertical")
-        .units("Mutation Categories")
-        .cellWidth(20)
-        .cellHeight(12)
-        .inputScale(this.colorScale)
-        .cellStepping(4)
-        .place({x: 800, y: 50});
-
-
-    svg.call(verticalLegend);
-
-
     self.on("needleSelectionChange", function (edata) {
         self.categCounts = edata.categCounts;
         svg.call(verticalLegend);
@@ -212,6 +194,29 @@ function MutsNeedlePlot (config) {
 
 
 }
+
+MutsNeedlePlot.prototype.drawLegend = function(svg) {
+
+    // LEGEND
+    self = this;
+    mutsScale = self.colorScale.domain(Object.keys(self.totalCategCounts));
+    var domain = self.x.domain();
+    xplacement = (domain[1] - domain[0]) * 0.75 + (domain[1] - domain[0]);
+    verticalLegend = d3.svg
+        .legend()
+        .labelFormat(function(l) { return (self.categCounts[l] || "") + " " + l; })
+        .cellPadding(4)
+        .orientation("vertical")
+        .units("Mutations")
+        .cellWidth(20)
+        .cellHeight(12)
+        .inputScale(mutsScale)
+        .cellStepping(4)
+        .place({x: xplacement, y: 50});
+
+    svg.call(verticalLegend);
+
+};
 
 MutsNeedlePlot.prototype.drawRegions = function(svg, regionData) {
 
@@ -363,7 +368,7 @@ MutsNeedlePlot.prototype.drawNeedles = function(svg, mutationData, regionData) {
 
     var y = this.y;
     var x = this.x;
-    var plotter = this;
+    var self = this;
 
     getYAxis = function() {
         return y;
@@ -416,6 +421,10 @@ MutsNeedlePlot.prototype.drawNeedles = function(svg, mutationData, regionData) {
 
 
         if (numericCoord > 0) {
+
+            // record and count categories
+            self.totalCategCounts[category] = (self.totalCategCounts[category] || 0) + numericValue;
+
             return {
                 category: category,
                 coordString: coordString,
@@ -493,9 +502,10 @@ MutsNeedlePlot.prototype.drawNeedles = function(svg, mutationData, regionData) {
 
         // adjust y-scale according to highest value an draw the rest
         if (regionData != undefined) {
-            plotter.drawRegions(svg, regionData);
+            self.drawRegions(svg, regionData);
         }
-        plotter.drawAxes(svg);
+        self.drawLegend(svg);
+        self.drawAxes(svg);
     }
 
 };
