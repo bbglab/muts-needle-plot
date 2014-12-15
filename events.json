@@ -1,0 +1,4 @@
+{
+	"needleSelectionChange": "Selection of needle is changing (user is dragging)",
+	"needleSelectionChangeEnd": "Selection of needle changed (user stopped selecting)"
+}

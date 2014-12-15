@@ -2,6 +2,31 @@ body {
     font-family: Verdana,Geneva,sans-serif;
 }
 
+
+/* brush selection */
+.extent {
+    opacity: 0.2;
+}
+
+.selected {
+    opacity: 0.9;
+    fill: lightblue;
+    stroke-width: 4;
+}
+
+/* figure legend */
+.mutLegendBG {
+    opacity: 0.7;
+    stroke-width: 2;
+    stroke: lightgrey;
+    dy: "0.35em";
+}
+
+.breakLabels {
+    font-size: 12px;
+    font-weight: bold;
+}
+
 .needle-line {
     stroke: black;
     stroke-width: 1;
@@ -41,6 +66,11 @@ body {
     border-width: 1px;
     border-color: rgba(190, 190, 190, 1);
     border-radius: 6px;
+}
+
+.d3-tip-selection {
+    font-size: 12px;
+    text-align: center;
 }
 
 /* Creates a small triangle extender for the tooltip */
