@@ -77,7 +77,7 @@ d3.json("./data/muts.json", function(error, data){
   };
 
 // Instantiate a plot
-  p = new mutneedles(plotConfig);
+  instance =new mutneedles(plotConfig);
 
 
 });

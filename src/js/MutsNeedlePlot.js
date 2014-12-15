@@ -208,7 +208,24 @@ MutsNeedlePlot.prototype.drawLegend = function(svg) {
 
     // LEGEND
     self = this;
-    mutsScale = self.colorScale.domain(Object.keys(self.totalCategCounts));
+
+    // prepare legend categories (correct order)
+    mutCategories = [];
+    categoryColors = [];
+    allcategs = Object.keys(self.totalCategCounts); // random order
+    orderedDeclaration = self.colorScale.domain();  // wanted order
+    for (idx in orderedDeclaration) {
+        c = orderedDeclaration[idx];
+        if (allcategs.indexOf(c) > -1) {
+            mutCategories.push(c);
+            categoryColors.push(self.colorScale(c))
+        }
+    }
+
+    // create scale with correct order of categories
+    mutsScale = self.colorScale.domain(mutCategories).range(categoryColors);
+
+
     var domain = self.x.domain();
     xplacement = (domain[1] - domain[0]) * 0.75 + (domain[1] - domain[0]);
     verticalLegend = d3.svg
@@ -385,16 +402,22 @@ MutsNeedlePlot.prototype.drawNeedles = function(svg, mutationData, regionData) {
 
     formatCoord = function(coord) {
        if (coord.indexOf("-") > -1) {
-            coords = coord.split("-");
-            // place neede at middle of affected region
-            coord = Math.floor((parseInt(coords[0]) + parseInt(coords[1])) / 2);
+           coords = coord.split("-");
+
+           // place neede at middle of affected region
+           coord = Math.floor((parseInt(coords[0]) + parseInt(coords[1])) / 2);
+
+           // check for splice sites: "?-9" or "9-?"
+           if (isNaN(coord)) {
+               if (coords[0] == "?") { coord = parseInt(coords[1]) }
+               else if (coords [1] == "?") { coord = parseInt(coords[0]) }
+           }
         } else {
             coord = parseInt(coord);
         }
         return coord;
     };
 
-    getColor = this.colorScale;
     tip = this.tip;
 
     // stack needles at same pos
@@ -420,7 +443,7 @@ MutsNeedlePlot.prototype.drawNeedles = function(svg, mutationData, regionData) {
         numericCoord = formatCoord(d.coord);
         numericValue = Number(d.value);
         stickHeight = stackNeedle(numericCoord, numericValue, needlePoint);
-        category = d.category || "";
+        category = d.category || "other";
 
         if (stickHeight + numericValue > highest) {
             // set Y-Axis always to highest available
@@ -440,10 +463,10 @@ MutsNeedlePlot.prototype.drawNeedles = function(svg, mutationData, regionData) {
                 coord: numericCoord,
                 value: numericValue,
                 stickHeight: stickHeight,
-                color: getColor(category)
+                color: self.colorScale(category)
             }
         } else {
-            console.debug("discarding " + d.coord + " " + d.category)
+            console.debug("discarding " + d.coord + " " + d.category + "("+ numericCoord +")");
         }
     }
 

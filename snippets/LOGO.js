@@ -39,5 +39,5 @@ var colorMap = {
 
 var config = {maxCoord: 220, minCoord: 130, mutationData: muts, regionData: regions, target: target, legends: legends, colorMap: colorMap }
 
-var plot1 =  new mutneedles(config);
+instance =  new mutneedles(config);
 
