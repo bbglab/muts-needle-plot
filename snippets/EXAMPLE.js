@@ -23,7 +23,7 @@ legends = {
 
 //Crate config Object
 plotConfig = {
-  maxCoord :      350,
+  maxCoord :      250,
   minCoord :      0,
   targetElement : yourDiv,
   mutationData:   "./data/muts.json",

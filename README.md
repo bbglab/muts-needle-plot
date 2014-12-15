@@ -12,7 +12,7 @@ Availability
    * **npm-registry**: <https://www.npmjs.org/package/muts-needle-plot>
    * **GitHub**: <https://github.com/bbglab/muts-needle-plot>
 
-![Image of a Needle-Plot](mutneedles.png)
+![Image of a Needle-Plot](mutations-needle-plot.png)
 
 Examples (snippets)
 ----------------------
