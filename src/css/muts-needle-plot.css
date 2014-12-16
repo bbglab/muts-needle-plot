@@ -9,7 +9,6 @@ body {
 }
 
 .selected {
-    opacity: 0.9;
     fill: lightblue;
     stroke-width: 4;
 }
@@ -34,6 +33,10 @@ body {
 .needle-line {
     stroke: black;
     stroke-width: 1;
+}
+
+.noshow {
+    opacity: 0.1;
 }
 
 .regionsBG {

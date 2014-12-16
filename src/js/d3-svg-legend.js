@@ -13,6 +13,7 @@ d3.svg.legend = function() {
     var orientation = "horizontal";
     var cellPadding = 0;
     var labelClass = function() { return ""; };
+    var onClick = undefined;
 
 
     function legend(svg) {
@@ -114,14 +115,14 @@ d3.svg.legend = function() {
         legend.target.selectAll(".legendTitle").remove();
 
 
-        legend.target.selectAll("g.legendCells")
+        var cells = legend.target.selectAll("g.legendCells")
             .data(legendValues)
             .enter()
             .append("g")
             .attr("class", "legendCells")
-            .attr("transform", function(d,i) {return "translate(" + (i * (cellWidth + cellPadding)) + ",0)" })
+            .attr("transform", function(d,i) {return "translate(" + (i * (cellWidth + cellPadding)) + ",0)" });
 
-        legend.target.selectAll("g.legendCells")
+        var rects = legend.target.selectAll("g.legendCells")
             .append("rect")
             .attr("class", "breakRect")
             .attr("height", cellHeight)
@@ -129,10 +130,14 @@ d3.svg.legend = function() {
             .style("fill", function(d) {return d.color})
             .style("stroke", function(d) {return d3.rgb(d.color).darker();});
 
+        if (legend.onLegendClick != undefined) {
+            cells.on("click", function(d) { onClick(d.stop[0]) });
+        }
+
         legend.target.selectAll("g.legendCells")
             .append("text")
             .attr("class", "breakLabels")
-            .style("pointer-events", "none");
+            .style("pointer-events", "cross");
 
         legend.target.append("text")
             .text(labelUnits)
@@ -241,6 +246,13 @@ d3.svg.legend = function() {
             incClass = function() {return incClass; }
         }
         labelClass = incClass;
+        return this;
+    };
+
+
+    legend.onLegendClick = function(incOnClick) {
+        if (!arguments.length) return onClick;
+        onClick = incOnClick;
         return this;
     };
 

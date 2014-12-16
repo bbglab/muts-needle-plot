@@ -244,10 +244,28 @@ MutsNeedlePlot.prototype.drawLegend = function(svg) {
         return (count > 0) ? "" : "nomuts";
     };
 
-    verticalLegend = d3.svg
-        .legend()
+    self.noshow = [];
+    var needleHeads = d3.selectAll(".needle-head");
+    showNoShow = function(categ){
+        if (_.contains(self.noshow, categ)) {
+            self.noshow = _.filter(self.noshow, function(s) { return s != categ });
+        } else {
+            self.noshow.push(categ);
+        }
+        needleHeads.classed("noshow", function(d) {
+            return _.contains(self.noshow, d.category);
+        });
+        var legendCells = d3.selectAll("g.legendCells");
+        legendCells.classed("noshow", function(d) {
+            return _.contains(self.noshow, d.stop[0]);
+        });
+    };
+
+
+    verticalLegend = d3.svg.legend()
         .labelFormat(legendLabel)
         .labelClass(legendClass)
+        .onLegendClick(showNoShow)
         .cellPadding(4)
         .orientation("vertical")
         .units(sum + " Mutations")
@@ -513,23 +531,25 @@ MutsNeedlePlot.prototype.drawNeedles = function(svg, mutationData, regionData) {
         return muts;
     }
 
-    function paintMuts(muts) {
-        var needles = d3.select(".mutneedles").selectAll()
-            .data(muts).enter()
-            .append("line")
-            .attr("y1", function(data) { return y(data.stickHeight+data.value); })
-            .attr("y2", function(data) { return y(data.stickHeight) })
-            .attr("x1", function(data) { return x(data.coord) })
-            .attr("x2", function(data) { return x(data.coord) })
-            .attr("class", "needle-line");
 
+    function paintMuts(muts) {
 
         minSize = 4;
         maxSize = 10;
         headSizeScale = d3.scale.log().range([minSize,maxSize]).domain([1, highest/2]);
-        headSize = function(n) {
+        var headSize = function(n) {
             return d3.min([d3.max([headSizeScale(n),minSize]), maxSize]);
         };
+
+
+        var needles = d3.select(".mutneedles").selectAll()
+            .data(muts).enter()
+            .append("line")
+            .attr("y1", function(data) { return y(data.stickHeight + data.value) + headSize(data.value) ; } )
+            .attr("y2", function(data) { return y(data.stickHeight) })
+            .attr("x1", function(data) { return x(data.coord) })
+            .attr("x2", function(data) { return x(data.coord) })
+            .attr("class", "needle-line");
 
         var needleHeads = d3.select(".mutneedles").selectAll()
             .data(muts)
