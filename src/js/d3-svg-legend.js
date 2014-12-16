@@ -29,6 +29,7 @@ d3.svg.legend = function() {
 
             legend.parentGroup.select(".mutLegendBG")
                 .attr(dim)
+                .attr('cursor', 'move');
         };
 
         drag = d3.behavior.drag()

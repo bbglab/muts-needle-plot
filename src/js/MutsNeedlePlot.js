@@ -107,20 +107,21 @@ function MutsNeedlePlot (config) {
     this.y = y;
 
     // CONFIGURE BRUSH
-    var brush = d3.svg.brush()
+    self.selector = d3.svg.brush()
         .x(x)
         .on("brush", brushmove)
         .on("brushend", brushend);
+    var selector = self.selector;
 
     this.svgClasses += " brush";
     var selectionRect = svg.attr("class", this.svgClasses)
-        .call(brush)
+        .call(selector)
         .selectAll('.extent')
         .attr('height', height);
 
     function brushmove() {
 
-        var extent = brush.extent();
+        var extent = selector.extent();
         needleHeads = d3.selectAll(".needle-head");
         selectedNeedles = [];
         categCounts = {};
@@ -149,7 +150,7 @@ function MutsNeedlePlot (config) {
         self.trigger('needleSelectionChangeEnd', {
             selected : selectedNeedles,
             categCounts: categCounts,
-            coords: brush.extent()
+            coords: selector.extent()
         });
         /*if(get_button.empty() === true) {
          clear_button = svg.append('text')
@@ -329,7 +330,7 @@ MutsNeedlePlot.prototype.drawRegions = function(svg, regionData) {
 
         regions.append("rect")
             .attr("x", function (r) {
-                return x(r.start)
+                return x(r.start);
             })
             .attr("y", y(0) + region_offset )
             .attr("ry", "3")
@@ -344,6 +345,19 @@ MutsNeedlePlot.prototype.drawRegions = function(svg, regionData) {
             .style("stroke", function (data) {
                 return d3.rgb(data.color).darker()
             });
+
+        regions
+            .attr('pointer-events', 'all')
+            .attr('cursor', 'pointer')
+            .on("click",  function(r) {
+            // set custom selection extent
+            self.selector.extent([r.start, r.end]);
+            // call the extent to change with transition
+            self.selector(d3.select(".brush").transition());
+            // call extent (selection) change listeners
+            self.selector.event(d3.select(".brush").transition().delay(300));
+
+        });
 
         regions.append("text")
             .attr("class", "regionName")
