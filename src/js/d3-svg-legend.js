@@ -12,6 +12,7 @@ d3.svg.legend = function() {
     var changeValue = 1;
     var orientation = "horizontal";
     var cellPadding = 0;
+    var labelClass = function() { return ""; };
 
 
     function legend(svg) {
@@ -80,8 +81,16 @@ d3.svg.legend = function() {
             legend.target.selectAll("g.legendCells").data(legendValues).exit().remove();
             legend.target.selectAll("g.legendCells").select("rect").style("fill", function(d) {return d.color});
             if (orientation == "vertical") {
-                legend.target.selectAll("g.legendCells").select("text.breakLabels").style("display", "block").style("text-anchor", "start").attr("x", cellWidth + cellPadding).attr("y", 5 + (cellHeight / 2)).text(function(d) {return labelFormat(d.stop[0]) + (d.stop[1].length > 0 ? " - " + labelFormat(d.stop[1]) : "")})
-                legend.target.selectAll("g.legendCells").attr("transform", function(d,i) {return "translate(0," + (i * (cellHeight + cellPadding)) + ")" });
+                legend.target.selectAll("g.legendCells")
+                    .select("text.breakLabels")
+                    .style("display", "block")
+                    .style("text-anchor", "start")
+                    .attr("x", cellWidth + cellPadding)
+                    .attr("y", 5 + (cellHeight / 2))
+                    .attr("class", function(d) { return "breakLabels " + labelClass(d.stop[0]); })
+                    .text(function(d) {return labelFormat(d.stop[0]) + (d.stop[1].length > 0 ? " - " + labelFormat(d.stop[1]) : "")});
+                legend.target.selectAll("g.legendCells")
+                    .attr("transform", function(d,i) {return "translate(0," + (i * (cellHeight + cellPadding)) + ")" });
             }
             else {
                 legend.target.selectAll("g.legendCells").attr("transform", function(d,i) {return "translate(" + (i * cellWidth) + ",0)" });
@@ -155,7 +164,7 @@ d3.svg.legend = function() {
             })
         }
         return this;
-    }
+    };
 
     legend.scale = function(testValue) {
         var foundColor = legendValues[legendValues.length - 1].color;
@@ -166,50 +175,50 @@ d3.svg.legend = function() {
             }
         }
         return foundColor;
-    }
+    };
 
     legend.cellWidth = function(newCellSize) {
         if (!arguments.length) return cellWidth;
         cellWidth = newCellSize;
         return this;
-    }
+    };
 
     legend.cellHeight = function(newCellSize) {
         if (!arguments.length) return cellHeight;
         cellHeight = newCellSize;
         return this;
-    }
+    };
 
     legend.cellPadding = function(newCellPadding) {
         if (!arguments.length) return cellPadding;
         cellPadding = newCellPadding;
         return this;
-    }
+    };
 
     legend.cellExtent = function(incColor,newExtent) {
         var selectedStop = legendValues.filter(function(el) {return el.color == incColor})[0].stop;
         if (arguments.length == 1) return selectedStop;
         legendValues.filter(function(el) {return el.color == incColor})[0].stop = newExtent;
         return this;
-    }
+    };
 
     legend.cellStepping = function(incStep) {
         if (!arguments.length) return changeValue;
         changeValue = incStep;
         return this;
-    }
+    };
 
     legend.units = function(incUnits) {
         if (!arguments.length) return labelUnits;
         labelUnits = incUnits;
         return this;
-    }
+    };
 
     legend.orientation = function(incOrient) {
         if (!arguments.length) return orientation;
         orientation = incOrient;
         return this;
-    }
+    };
 
     legend.labelFormat = function(incFormat) {
         if (!arguments.length) return labelFormat;
@@ -218,13 +227,22 @@ d3.svg.legend = function() {
             labelFormat = function(inc) {return inc};
         }
         return this;
-    }
+    };
 
     legend.place = function(incCoordinates) {
-        if (!arguments.length) return incCoordinates;
+        if (!arguments.length) return coordinates;
         coordinates = incCoordinates;
         return this;
-    }
+    };
+
+    legend.labelClass = function(incClass) {
+        if (!arguments.length) return labelClass;
+        if (typeof incClass != "function") {
+            incClass = function() {return incClass; }
+        }
+        labelClass = incClass;
+        return this;
+    };
 
     return legend;
 

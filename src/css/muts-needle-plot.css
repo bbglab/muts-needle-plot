@@ -24,7 +24,11 @@ body {
 
 .breakLabels {
     font-size: 12px;
-    font-weight: bold;
+}
+
+.breakLabels.nomuts {
+    font-weight: normal;
+    opacity: 0.3;
 }
 
 .needle-line {

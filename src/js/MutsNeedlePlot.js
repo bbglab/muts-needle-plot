@@ -193,7 +193,7 @@ function MutsNeedlePlot (config) {
 
     self.on("needleSelectionChange", function(edata) {
             selection = edata.coords;
-            if (selection[1] - selection[0] > 10) {
+            if (selection[1] - selection[0] > 0) {
                 self.selectionTip.show({left: selection[0], right: selection[1]}, selectionRect.node());
             } else {
                 self.selectionTip.hide();
@@ -228,12 +228,29 @@ MutsNeedlePlot.prototype.drawLegend = function(svg) {
 
     var domain = self.x.domain();
     xplacement = (domain[1] - domain[0]) * 0.75 + (domain[1] - domain[0]);
+
+    var sum = 0;
+    for (var c in self.totalCategCounts) {
+        sum += self.totalCategCounts[c];
+    }
+
+    legendLabel = function(categ) {
+        var count = (self.categCounts[categ] || (self.selectedNeedles.length == 0 && self.totalCategCounts[categ]) || 0);
+        return  categ + (count > 0 ? ": " + Math.round(count/sum*100) + "%" : "");
+    };
+
+    legendClass = function(categ) {
+        var count = (self.categCounts[categ] || (self.selectedNeedles.length == 0 && self.totalCategCounts[categ]) || 0);
+        return (count > 0) ? "" : "nomuts";
+    };
+
     verticalLegend = d3.svg
         .legend()
-        .labelFormat(function(l) { return (self.categCounts[l] || (self.selectedNeedles.length == 0 && self.totalCategCounts[l]) || "") + " " + l; })
+        .labelFormat(legendLabel)
+        .labelClass(legendClass)
         .cellPadding(4)
         .orientation("vertical")
-        .units("Mutations")
+        .units(sum + " Mutations")
         .cellWidth(20)
         .cellHeight(12)
         .inputScale(mutsScale)
