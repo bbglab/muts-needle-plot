@@ -6,7 +6,7 @@ Make sure you have npm installed.
 
     git pull
 
-2. Check and increment the version in the `package.json` file. E.g. version "0.5.2"
+2. Check and increment the version in the `package.json` file. E.g. version "0.6.0"
 
 3. Check if examples are working fine
 
@@ -23,14 +23,14 @@ Make sure you have npm installed.
 
 5. Commit all changes, push to repository
 
-    git commit -a -m "Release of version 0.5.2"
-    git tag -a v0.5.2 -m 'version 0.5.2'
+    git commit -a -m "Release of version 0.6.0"
+    git tag -a v0.6.0 -m 'version 0.6.0'
     git push
     git push origin --tags
 
 6. Go to GitHub and schedule a new Release
     Title: Mutations Needle Plot
     Changelog:
-    v0.5.2
+    v0.6.0
      * Selection (new)
      * Legend (new)

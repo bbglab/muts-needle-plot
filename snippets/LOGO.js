@@ -41,3 +41,6 @@ var config = {maxCoord: 220, minCoord: 130, mutationData: muts, regionData: regi
 
 instance =  new mutneedles(config);
 
+// BioJS event system test
+//instance=instance
+

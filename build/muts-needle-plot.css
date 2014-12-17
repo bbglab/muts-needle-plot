@@ -9,7 +9,6 @@ body {
 }
 
 .selected {
-    opacity: 0.9;
     fill: lightblue;
     stroke-width: 4;
 }
@@ -19,12 +18,15 @@ body {
     opacity: 0.7;
     stroke-width: 2;
     stroke: lightgrey;
-    dy: "0.35em";
 }
 
 .breakLabels {
     font-size: 12px;
-    font-weight: bold;
+}
+
+.breakLabels.nomuts {
+    font-weight: normal;
+    opacity: 0.3;
 }
 
 .needle-line {
@@ -32,13 +34,27 @@ body {
     stroke-width: 1;
 }
 
+.noshow {
+    opacity: 0.1;
+}
+
 .regionsBG {
     fill: lightgrey;
 }
 
-.regionName {
+.regionGroup:hover > .regionName {
     fill: black;
     font-weight: bold;
+    opacity: 1;
+}
+
+.regionGroup:hover > rect {
+    stroke-width: 4;
+}
+
+.regionName {
+    fill: black;
+    opacity: 0.5;
 }
 
 .x-axis path, .x-axis line, .y-axis path, .y-axis line {

@@ -79,6 +79,8 @@ d3.json("./data/muts.json", function(error, data){
 // Instantiate a plot
   instance =new mutneedles(plotConfig);
 
+// BioJS event system test
+//instance=instance
 
 });
 

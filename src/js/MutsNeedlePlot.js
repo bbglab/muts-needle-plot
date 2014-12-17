@@ -359,19 +359,91 @@ MutsNeedlePlot.prototype.drawRegions = function(svg, regionData) {
 
         });
 
+        // Place and label location
+        var labels = [];
+
         regions.append("text")
             .attr("class", "regionName")
             .attr("text-anchor", "middle")
             .attr("x", function (r) {
-                return x(r.start) + (x(r.end) - x(r.start)) / 2
+                r.x = x(r.start) + (x(r.end) - x(r.start)) / 2;
+                return r.x;
             })
-            .attr("y", y(0) + text_offset)
+            .attr("y", function(r) {r.y = y(0) + text_offset; return r.y; } )
             .attr("dy", "0.35em")
             .style("font-size", "12px")
             .style("text-decoration", "bold")
             .text(function (data) {
                 return data.name
             });
+
+        var regionNames = d3.selectAll(".regionName");
+        regionNames.each(function(d, i) {
+            var interactionLength = this.getBBox().width / 2;
+            labels.push({x: d.x, y: d.y, label: d.name, weight: d.name.length, radius: interactionLength});
+        });
+
+        var force = d3.layout.force()
+            .chargeDistance(5)
+            .nodes(labels)
+            .charge(-10)
+            .gravity(0);
+
+        var minX = x(minCoord);
+        var maxX = x(maxCoord);
+        var withinBounds = function(x) {
+            return d3.min([
+                d3.max([
+                    minX,
+                    x]),
+                maxX
+            ]);
+        };
+        function collide(node) {
+            var r = node.radius + 3,
+                nx1 = node.x - r,
+                nx2 = node.x + r,
+                ny1 = node.y - r,
+                ny2 = node.y + r;
+            return function(quad, x1, y1, x2, y2) {
+                if (quad.point && (quad.point !== node)) {
+                    var l = node.x - quad.point.x,
+                        x = l;
+                    r = node.radius + quad.point.radius;
+                    if (Math.abs(l) < r) {
+                        l = (l - r) / l * .005;
+                        x *= l;
+                        x =  (node.x > quad.point.x && x < 0) ? -x : x;
+                        node.x += x;
+                        quad.point.x -= x;
+                    }
+                }
+                return x1 > nx2
+                    || x2 < nx1
+                    || y1 > ny2
+                    || y2 < ny1;
+            };
+        }
+        force.on("tick", function(e) {
+            var q = d3.geom.quadtree(labels),
+                i = 0,
+                n = labels.length;
+            while (++i < n) {
+                q.visit(collide(labels[i]));
+            }
+            // Update the position of the text element
+            svg.selectAll("text.regionName")
+                .attr("x", function(d) {
+                    for (i = 0; i < n; i++) {
+                        if (d.name == labels[i].label) {
+                            labels[i].x = withinBounds(labels[i].x);
+                            return labels[i].x;
+                        }
+                    }
+                }
+            );
+        });
+        force.start();
     }
 
     function formatRegions(regions) {

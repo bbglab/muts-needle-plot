@@ -21,3 +21,6 @@ var config = {maxCoord: 350, mutationData: muts, regionData: regions, target: ta
 
 instance =  new mutneedles(config);
 
+// BioJS event system test
+//instance=instance
+

@@ -37,3 +37,5 @@ plotConfig = {
 // Instantiate a plot
 instance = new mutneedles(plotConfig);
 
+// BioJS event system test
+//instance=instance

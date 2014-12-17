@@ -42,9 +42,19 @@ body {
     fill: lightgrey;
 }
 
-.regionName {
+.regionGroup:hover > .regionName {
     fill: black;
     font-weight: bold;
+    opacity: 1;
+}
+
+.regionGroup:hover > rect {
+    stroke-width: 4;
+}
+
+.regionName {
+    fill: black;
+    opacity: 0.5;
 }
 
 .x-axis path, .x-axis line, .y-axis path, .y-axis line {
