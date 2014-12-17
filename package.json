@@ -51,7 +51,8 @@
     "watchify": "^1.0.6"
   },
   "biojs": {
-    "logo": "/"
+    "logo": "/",
+    "registryHeight": "520",
   },
   "sniper": {
     "js": [
