@@ -20,10 +20,10 @@ var muts = [
   { coord: "172", category : "mild", value: 50 }
 ];
 
-var regions = {
-  "cluster 1": "145-155",
-  "cluster 2": "170-172"
-};
+var regions = [
+  {"name": "cluster-1", "coord": "145-155"},
+  {"name": "cluster-2", "coord": "170-172"}
+];
 
 var legends = {x: "Mutations Needle Plot", y: "# Mutations"}
 

@@ -42,7 +42,7 @@ body {
     fill: lightgrey;
 }
 
-.regionGroup:hover > .regionName {
+.regionGroup:hover > text {
     fill: black;
     font-weight: bold;
     opacity: 1;
@@ -55,6 +55,11 @@ body {
 .regionName {
     fill: black;
     opacity: 0.5;
+}
+
+.repeatedName.noshow {
+    fill: black;
+    opacity: 0;
 }
 
 .x-axis path, .x-axis line, .y-axis path, .y-axis line {

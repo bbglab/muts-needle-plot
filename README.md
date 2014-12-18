@@ -3,14 +3,16 @@ Mutations Needle Plot (muts-needle-plot)
 
 A needle-plot (aka stem-plot or lollipop-plot) plots each data point as a big dot and adds a vertical line that makes it appear like a needle. 
 
-[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.13185.svg)](http://dx.doi.org/10.5281/zenodo.13185)
+![DOI](https://zenodo.org/badge/7688/bbglab/muts-needle-plot.svg)
+
+This software is **citable**! Different citation styles available at *http://dx.doi.org/*+DOI
 
 Availability
 -----------------------
 
-   * **BioJS-registry** (with live examples): <http://registry.biojs.net/client/#/detail/muts-needle-plot>
-   * **npm-registry**: <https://www.npmjs.org/package/muts-needle-plot>
-   * **GitHub**: <https://github.com/bbglab/muts-needle-plot>
+   * **Live examples** at the BioJS-registry: <http://registry.biojs.net/client/#/detail/muts-needle-plot>
+   * **Installable JavaScript library** at npm-registry: <https://www.npmjs.org/package/muts-needle-plot>
+   * **Source code** at GitHub: <https://github.com/bbglab/muts-needle-plot>
 
 ![Image of a Needle-Plot](mutations-needle-plot.png)
 

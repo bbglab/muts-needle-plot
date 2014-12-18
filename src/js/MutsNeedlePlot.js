@@ -118,6 +118,18 @@ function MutsNeedlePlot (config) {
         .call(selector)
         .selectAll('.extent')
         .attr('height', height);
+    selectionRect.on("mouseenter", function() {
+        var selection = selector.extent();
+        self.selectionTip.show({left: selection[0], right: selection[1]}, selectionRect.node());
+    })
+        .on("mouseout", function(){
+            d3.select(".d3-tip-selection")
+                .transition()
+                .delay(3000)
+                .duration(1000)
+                .style("opacity",0)
+                .style('pointer-events', 'none');
+        });
 
     function brushmove() {
 
@@ -196,6 +208,12 @@ function MutsNeedlePlot (config) {
             selection = edata.coords;
             if (selection[1] - selection[0] > 0) {
                 self.selectionTip.show({left: selection[0], right: selection[1]}, selectionRect.node());
+                d3.select(".d3-tip-selection")
+                    .transition()
+                    .delay(3000)
+                    .duration(1000)
+                    .style("opacity",0)
+                    .style('pointer-events', 'none');
             } else {
                 self.selectionTip.hide();
             }
@@ -228,7 +246,8 @@ MutsNeedlePlot.prototype.drawLegend = function(svg) {
 
 
     var domain = self.x.domain();
-    xplacement = (domain[1] - domain[0]) * 0.75 + (domain[1] - domain[0]);
+    xplacement = (self.x(domain[1]) - self.x(domain[0])) * 0.75 + self.x(domain[0]);
+
 
     var sum = 0;
     for (var c in self.totalCategCounts) {
@@ -362,8 +381,18 @@ MutsNeedlePlot.prototype.drawRegions = function(svg, regionData) {
         // Place and label location
         var labels = [];
 
+        var repeatedRegion = {};
+        var getRegionClass = function(region) {
+            var c = "regionName";
+            var repeatedClass = "RR_"+region.name;
+            if(_.has(repeatedRegion, region.name)) {
+                c = "repeatedName noshow " + repeatedClass;
+            }
+            repeatedRegion[region.name] = repeatedClass;
+            return c;
+        };
         regions.append("text")
-            .attr("class", "regionName")
+            .attr("class", getRegionClass)
             .attr("text-anchor", "middle")
             .attr("x", function (r) {
                 r.x = x(r.start) + (x(r.end) - x(r.start)) / 2;
@@ -424,6 +453,11 @@ MutsNeedlePlot.prototype.drawRegions = function(svg, regionData) {
                     || y2 < ny1;
             };
         }
+        var moveRepeatedLabels = function(label, x) {
+            var name = repeatedRegion[label];
+            svg.selectAll("text."+name)
+                .attr("x", newx);
+        };
         force.on("tick", function(e) {
             var q = d3.geom.quadtree(labels),
                 i = 0,
@@ -432,14 +466,12 @@ MutsNeedlePlot.prototype.drawRegions = function(svg, regionData) {
                 q.visit(collide(labels[i]));
             }
             // Update the position of the text element
+            var i = 0;
             svg.selectAll("text.regionName")
                 .attr("x", function(d) {
-                    for (i = 0; i < n; i++) {
-                        if (d.name == labels[i].label) {
-                            labels[i].x = withinBounds(labels[i].x);
-                            return labels[i].x;
-                        }
-                    }
+                    newx = labels[i++].x;
+                    moveRepeatedLabels(d.name, newx);
+                    return newx;
                 }
             );
         });
@@ -447,17 +479,19 @@ MutsNeedlePlot.prototype.drawRegions = function(svg, regionData) {
     }
 
     function formatRegions(regions) {
-        regionList = [];
-        for (key in regions) {
+        for (key in Object.keys(regions)) {
 
-            regionList.push({
+            regions[key].start = getRegionStart(regions[key].coord);
+            regions[key].end = getRegionEnd(regions[key].coord);
+            regions[key].color = getColor(regions[key].name);
+            /*regionList.push({
                 'name': key,
                 'start': getRegionStart(regions[key]),
                 'end': getRegionEnd(regions[key]),
                 'color': getColor(key)
-            });
+            });*/
         }
-        return regionList;
+        return regions;
     }
 
     if (typeof regionData == "string") {

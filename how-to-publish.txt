@@ -6,7 +6,7 @@ Make sure you have npm installed.
 
     git pull
 
-2. Check and increment the version in the `package.json` file. E.g. version "0.6.0"
+2. Check and increment the version in the `package.json` file. E.g. version "0.7.0"
 
 3. Check if examples are working fine
 
@@ -23,8 +23,8 @@ Make sure you have npm installed.
 
 5. Commit all changes, push to repository
 
-    git commit -a -m "Release of version 0.6.0"
-    git tag -a v0.6.0 -m 'version 0.6.0'
+    git commit -a -m "Release of version 0.7.0"
+    git tag -a v0.7.0 -m 'version 0.7.0'
     git push
     git push origin --tags
 
@@ -35,6 +35,9 @@ Make sure you have npm installed.
     A needle-plot (aka stem-plot or lollipop-plot) plots each data point as a big dot and adds a vertical line that makes it appear like a needle.
 
     Changelog:
-    v0.6.0
-     * Selection (new)
-     * Legend (new)
+    v0.7.0
+     * Regions format changed (new)
+     * Repeated regions labels stacked (one visible)
+     * Legend placement fix
+     * Coordinates tip disappears in time.
+

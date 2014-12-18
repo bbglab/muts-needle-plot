@@ -18,7 +18,7 @@ colorMap = {
 
 legends = {
   x: "Corresponding protein positions to transcript X",
-  y: "Number of recorded mutation in transcript X of Gene Y and CT Z"
+  y: "Number of recorded mutation"
 };
 
 //Crate config Object
@@ -27,9 +27,7 @@ plotConfig = {
   minCoord :      0,
   targetElement : yourDiv,
   mutationData:   "./data/muts.json",
-  //mutationData:   [{"category": "test", "coord": "99", "value": 77}],
   regionData:     "./data/regions.json",
-  //regionData:     {"beautiful-region": "99-199"},
   colorMap:       colorMap,
   legends:        legends
 };

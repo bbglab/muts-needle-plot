@@ -40,7 +40,7 @@ mapper = function(data) {
 
 legends = {
   x: "Corresponding protein positions to transcript X",
-  y: "Number of recorded mutation in transcript X of Gene Y and CT Z"
+  y: "Number of recorded mutation"
 };
 
 // aggregation by sum of value
@@ -65,7 +65,7 @@ d3.json("./data/muts.json", function(error, data){
 
   //Crate config Object
   plotConfig = {
-    maxCoord :      350,
+    maxCoord :      250,
     minCoord :      0,
     targetElement : yourDiv,
     mutationData:   agg_muts,
