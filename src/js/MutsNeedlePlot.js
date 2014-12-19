@@ -256,7 +256,7 @@ MutsNeedlePlot.prototype.drawLegend = function(svg) {
 
     legendLabel = function(categ) {
         var count = (self.categCounts[categ] || (self.selectedNeedles.length == 0 && self.totalCategCounts[categ]) || 0);
-        return  categ + (count > 0 ? ": " + Math.round(count/sum*100) + "%" : "");
+        return  categ + (count > 0 ? ": "+count+" (" + Math.round(count/sum*100) + "%)" : "");
     };
 
     legendClass = function(categ) {
