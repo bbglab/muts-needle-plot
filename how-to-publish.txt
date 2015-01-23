@@ -29,7 +29,7 @@ Make sure you have npm installed.
     git push origin --tags
 
 6. Go to GitHub and schedule a new Release
-    Title: Mutations Needle Plot
+    Title: Mutations Needle Plot v0.7.2
 
     Release notes:
     A needle-plot (aka stem-plot or lollipop-plot) plots each data point as a big dot and adds a vertical line that makes it appear like a needle.
