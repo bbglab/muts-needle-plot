@@ -695,6 +695,11 @@ MutsNeedlePlot.prototype.drawNeedles = function(svg, mutationData, regionData) {
         }
         self.drawLegend(svg);
         self.drawAxes(svg);
+
+        /* Bring needle heads in front of regions */
+        needleHeads.each(function() {
+            this.parentNode.appendChild(this);
+        });
     }
 
 };

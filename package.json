@@ -1,7 +1,7 @@
 {
   "name": "muts-needle-plot",
   "description": "Draws a Needle-Plot for mutation data (stacked).",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "homepage": "https://github.com/bbglab/muts-needle-plot",
   "author": {
     "name": "Michael P Schroeder",
