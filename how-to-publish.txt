@@ -6,7 +6,7 @@ Make sure you have npm installed.
 
     git pull
 
-2. Check and increment the version in the `package.json` file. E.g. version "0.7.2"
+2. Check and increment the version in the `package.json` file. E.g. version "0.8.0"
 
 3. Check if examples are working fine
 
@@ -23,18 +23,18 @@ Make sure you have npm installed.
 
 5. Commit all changes, push to repository
 
-    git commit -a -m "Release of version 0.7.2"
-    git tag -a v0.7.2 -m 'version 0.7.2'
+    git commit -a -m "Release of version 0.8.0"
+    git tag -a v0.8.0 -m 'version 0.8.0'
     git push
     git push origin --tags
 
 6. Go to GitHub and schedule a new Release
-    Title: Mutations Needle Plot v0.7.2
+    Title: Mutations Needle Plot v0.8.0
 
     Release notes:
     A needle-plot (aka stem-plot or lollipop-plot) plots each data point as a big dot and adds a vertical line that makes it appear like a needle.
 
     Changelog:
-    v0.7.2
-     * Fix: Needle heads on top of regions
+    v0.8.0
+     * Optimization for download: Standard styling in SVG, interaction in external .css
 

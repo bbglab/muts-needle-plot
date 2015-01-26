@@ -29,7 +29,10 @@ d3.svg.legend = function() {
 
             legend.parentGroup.select(".mutLegendBG")
                 .attr(dim)
-                .attr('cursor', 'move');
+                .attr('cursor', 'move')
+                .attr('stroke', 'lightgrey')
+                .attr('opacity', 0.7)
+                .attr('stroke-width', 2);
         };
 
         drag = d3.behavior.drag()
@@ -87,6 +90,7 @@ d3.svg.legend = function() {
                     .select("text.breakLabels")
                     .style("display", "block")
                     .style("text-anchor", "start")
+                    .attr('font-size', 12)
                     .attr("x", cellWidth + cellPadding)
                     .attr("y", 5 + (cellHeight / 2))
                     .attr("class", function(d) { return "breakLabels " + labelClass(d.stop[0]); })

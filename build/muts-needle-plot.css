@@ -4,42 +4,19 @@ body {
 
 
 /* brush selection */
-.extent {
-    opacity: 0.2;
-}
-
 .selected {
     fill: lightblue;
     stroke-width: 4;
 }
 
 /* figure legend */
-.mutLegendBG {
-    opacity: 0.7;
-    stroke-width: 2;
-    stroke: lightgrey;
-}
-
-.breakLabels {
-    font-size: 12px;
-}
-
 .breakLabels.nomuts {
     font-weight: normal;
     opacity: 0.3;
 }
 
-.needle-line {
-    stroke: black;
-    stroke-width: 1;
-}
-
 .noshow {
     opacity: 0.1;
-}
-
-.regionsBG {
-    fill: lightgrey;
 }
 
 .regionGroup:hover > text {
@@ -52,29 +29,9 @@ body {
     stroke-width: 4;
 }
 
-.regionName {
-    fill: black;
-    opacity: 0.5;
-}
-
 .repeatedName.noshow {
     fill: black;
     opacity: 0;
-}
-
-.x-axis path, .x-axis line, .y-axis path, .y-axis line {
-    fill: none;
-}
-
-.x-label, .y-label {
-    font-weight: bold;
-    font-size: 12px;
-}
-
-.domain {
-    fill: none;
-    stroke: black;
-    stroke-width: 1;
 }
 
 .d3-tip {

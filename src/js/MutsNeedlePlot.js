@@ -48,7 +48,7 @@ function MutsNeedlePlot (config) {
         "x": "Coordinate"
     };
 
-    this.svgClasses = "mutneedles"
+    this.svgClasses = "mutneedles";
     this.buffer = 0;
 
     var maxCoord = this.maxCoord;
@@ -117,7 +117,9 @@ function MutsNeedlePlot (config) {
     var selectionRect = svg.attr("class", this.svgClasses)
         .call(selector)
         .selectAll('.extent')
-        .attr('height', height);
+        .attr('height', height)
+        .attr('opacity', 0.2);
+
     selectionRect.on("mouseenter", function() {
         var selection = selector.extent();
         self.selectionTip.show({left: selection[0], right: selection[1]}, selectionRect.node());
@@ -164,28 +166,6 @@ function MutsNeedlePlot (config) {
             categCounts: categCounts,
             coords: selector.extent()
         });
-        /*if(get_button.empty() === true) {
-         clear_button = svg.append('text')
-         .attr("y", 460)
-         .attr("x", 825)
-         .attr("class", "clear-button")
-         .text("Clear Brush");
-         }
-
-         x.domain(brush.extent());
-
-         transition_data();
-         reset_axis();
-
-         points.classed("selected", false);
-         d3.select(".brush").call(brush.clear());
-
-         clear_button.on('click', function(){
-         x.domain([0, 50]);
-         transition_data();
-         reset_axis();
-         clear_button.remove();
-         });*/
     }
 
     /// DRAW
@@ -338,7 +318,8 @@ MutsNeedlePlot.prototype.drawRegions = function(svg, regionData) {
             .attr("x", x(minCoord) )
             .attr("y", y(0) + bg_offset )
             .attr("width", x(maxCoord) - x(minCoord) )
-            .attr("height", 10);
+            .attr("height", 10)
+            .attr("fill", "lightgrey");
 
 
         var regions = regionsBG = d3.select(".mutneedles").selectAll()
@@ -394,6 +375,8 @@ MutsNeedlePlot.prototype.drawRegions = function(svg, regionData) {
         regions.append("text")
             .attr("class", getRegionClass)
             .attr("text-anchor", "middle")
+            .attr("fill", "black")
+            .attr("opacity", 0.5)
             .attr("x", function (r) {
                 r.x = x(r.start) + (x(r.end) - x(r.start)) / 2;
                 return r.x;
@@ -517,7 +500,7 @@ MutsNeedlePlot.prototype.drawAxes = function(svg) {
     xAxis = d3.svg.axis().scale(x).orient("bottom");
 
     svg.append("svg:g")
-      .attr("class", "x-axis")
+      .attr("class", "x-axis axis")
       .attr("transform", "translate(0," + (this.height - this.buffer) + ")")
       .call(xAxis);
 
@@ -525,21 +508,32 @@ MutsNeedlePlot.prototype.drawAxes = function(svg) {
 
 
     svg.append("svg:g")
-      .attr("class", "y-axis")
+      .attr("class", "y-axis axis")
       .attr("transform", "translate(" + (this.buffer * 1.2 + - 10)  + ",0)")
       .call(yAxis);
 
-    svg.append("text")
-      .attr("class", "y-label")
-      .attr("text-anchor", "middle")
-      .attr("transform", "translate(" + (this.buffer / 3) + "," + (this.height / 2) + "), rotate(-90)")
-      .text(this.legends.y);
+    // appearance for x and y legend
+    d3.selectAll(".axis path")
+        .attr('fill', 'none');
+    d3.selectAll(".domain")
+        .attr('stroke', 'black')
+        .attr('stroke-width', 1);
 
     svg.append("text")
-      .attr("class", "x-label")
-      .attr("text-anchor", "middle")
-      .attr("transform", "translate(" + (this.width / 2) + "," + (this.height - this.buffer / 3) + ")")
-      .text(this.legends.x);
+        .attr("class", "y-label")
+        .attr("text-anchor", "middle")
+        .attr("transform", "translate(" + (this.buffer / 3) + "," + (this.height / 2) + "), rotate(-90)")
+        .text(this.legends.y)
+        .attr('font-weight', 'bold')
+        .attr('font-size', 12);
+
+    svg.append("text")
+          .attr("class", "x-label")
+          .attr("text-anchor", "middle")
+          .attr("transform", "translate(" + (this.width / 2) + "," + (this.height - this.buffer / 3) + ")")
+          .text(this.legends.x)
+        .attr('font-weight', 'bold')
+        .attr('font-size', 12);
     
 };
 
@@ -669,7 +663,9 @@ MutsNeedlePlot.prototype.drawNeedles = function(svg, mutationData, regionData) {
             .attr("y2", function(data) { return y(data.stickHeight) })
             .attr("x1", function(data) { return x(data.coord) })
             .attr("x2", function(data) { return x(data.coord) })
-            .attr("class", "needle-line");
+            .attr("class", "needle-line")
+            .attr("stroke", "black")
+            .attr("stroke-width", 1);
 
         var needleHeads = d3.select(".mutneedles").selectAll()
             .data(muts)
