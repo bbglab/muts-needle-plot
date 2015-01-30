@@ -1,14 +1,11 @@
-// BioJS-Sniper creates the DOM-element yourDiv by default
-yourDiv.innerHTML = '';
-
 // d3 & underscore are imported through the header
 // import our plot-library
 var mutneedles = require("muts-needle-plot");
 
 
-mutData = [];
+var mutData = [];
 
-colorMap = {
+var colorMap = {
   // mutation categories
   "missense": "yellow",
   "synonymous": "lightblue",
@@ -20,7 +17,7 @@ colorMap = {
 
 
 // map of categories to a more general categorizaiont
-consequenceMap = {
+var consequenceMap = {
   // mutation categories
   "missense_variant": "missense",
   "inframe_deletion": "missense",
@@ -31,22 +28,22 @@ consequenceMap = {
 };
 
 // category change mapper
-mapper = function(data) {
+var mapper = function(data) {
   return _.map(data, function(d) {
     d.category = consequenceMap[d.category];
     return d;
   });
 };
 
-legends = {
+var legends = {
   x: "Corresponding protein positions to transcript X",
   y: "Number of recorded mutation"
 };
 
 // aggregation by sum of value
-sumAggregator = function(data) {
+var sumAggregator = function(data) {
   // aggregate
-  summed_by_type = _(data).reduce(function(mem, d) {
+  var summed_by_type = _(data).reduce(function(mem, d) {
     mem[d.coord+ d.category] = {
       coord: d.coord,
       category: d.category,
@@ -60,11 +57,11 @@ sumAggregator = function(data) {
 
 d3.json("./data/muts.json", function(error, data){
 
-  mapped = mapper(data);
-  agg_muts = sumAggregator(mapped);
+  var mapped = mapper(data);
+  var agg_muts = sumAggregator(mapped);
 
   //Crate config Object
-  plotConfig = {
+  var plotConfig = {
     maxCoord :      250,
     minCoord :      0,
     targetElement : yourDiv,
@@ -77,11 +74,8 @@ d3.json("./data/muts.json", function(error, data){
   };
 
 // Instantiate a plot
-  instance =new mutneedles(plotConfig);
+  var instance =new mutneedles(plotConfig);
 
-// BioJS event system test
-//instance=instance
+//@biojs-instance=instance (provides the instance to the BioJS event system)
 
 });
-
-

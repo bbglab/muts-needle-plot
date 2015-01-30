@@ -10,7 +10,7 @@ This software is **citable**! Different citation styles available at *http://dx.
 Availability
 -----------------------
 
-   * **Live examples** at the BioJS-registry: <http://registry.biojs.net/client/#/detail/muts-needle-plot>
+   * **Live examples** at the BioJS-registry: <http://biojs.io/d/muts-needle-plot>
    * **Installable JavaScript library** at npm-registry: <https://www.npmjs.org/package/muts-needle-plot>
    * **Source code** at GitHub: <https://github.com/bbglab/muts-needle-plot>
 

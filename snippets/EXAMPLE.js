@@ -1,10 +1,7 @@
-// BioJS-Sniper creates the DOM-element yourDiv by default
-yourDiv.innerHTML = '';
-
 // import our plot-library
 var mutneedles = require("muts-needle-plot");
 
-colorMap = {
+var colorMap = {
   // mutation categories
   "missense_variant": "yellow",
   "frameshift_variant": "blue",
@@ -16,13 +13,13 @@ colorMap = {
   "region1": "olive"
 };
 
-legends = {
+var legends = {
   x: "Corresponding protein positions to transcript X",
   y: "Number of recorded mutation"
 };
 
 //Crate config Object
-plotConfig = {
+var plotConfig = {
   maxCoord :      250,
   minCoord :      0,
   targetElement : yourDiv,
@@ -33,7 +30,6 @@ plotConfig = {
 };
 
 // Instantiate a plot
-instance = new mutneedles(plotConfig);
+var instance = new mutneedles(plotConfig);
 
-// BioJS event system test
-//instance=instance
+//@biojs-instance=instance (provides the instance to the BioJS event system)
