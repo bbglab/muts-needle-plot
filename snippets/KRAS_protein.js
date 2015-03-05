@@ -41,6 +41,4 @@ create_download_link = function() {
 
 create_download_link();
 
-// BioJS event system test
-//instance=instance
-
+//@biojs-instance=instance (provides the instance to the BioJS event system)
