@@ -25,7 +25,9 @@ plotConfig = {
   mutationData:   "./data/TP53_MUTATIONS.json",
   regionData:     "./data/TP53_REGIONS.json",
   colorMap:       colorMap,
-  legends:        legends
+  legends:        legends,
+  width: 600,
+  height: 400, responsive: 'resize'
 };
 
 // Instantiate a plot

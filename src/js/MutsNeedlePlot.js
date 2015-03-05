@@ -76,18 +76,34 @@ function MutsNeedlePlot (config) {
 
     this.selectionTip = d3.tip()
         .attr('class', 'd3-tip d3-tip-selection')
-        .offset([100, 0])
+        .offset([-50, 0])
         .html(function(d) {
             return "<span> Selected coordinates<br/>" + Math.round(d.left) + " - " + Math.round(d.right) + "</span>";
         })
         .direction('n');
 
     // INIT SVG
+    var svg;
+    var topnode;
+    if (config.responsive == 'resize') {
+        topnode  = d3.select(targetElement).append("svg")
+            .attr("width", '100%')
+            .attr("height", '100%')
+            .attr('viewBox','0 0 '+Math.min(width)+' '+Math.min(height))
+            .attr('class', 'brush');
+        svg = topnode
+            .append("g")
+            .attr("class", this.svgClasses)
+            .attr("transform", "translate(0,0)");
+    } else  {
 
-    var svg = d3.select(targetElement).append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .attr("class", this.svgClasses);
+        var svg = d3.select(targetElement).append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("class", this.svgClasses + " brush");
+        topnode = svg;
+    }
+
 
     svg.call(this.tip);
     svg.call(this.selectionTip);
@@ -113,11 +129,11 @@ function MutsNeedlePlot (config) {
         .on("brushend", brushend);
     var selector = self.selector;
 
-    this.svgClasses += " brush";
-    var selectionRect = svg.attr("class", this.svgClasses)
+    var selectionRect = topnode
         .call(selector)
         .selectAll('.extent')
-        .attr('height', height)
+        .attr('height', 50)
+        .attr('y', height-50)
         .attr('opacity', 0.2);
 
     selectionRect.on("mouseenter", function() {
@@ -320,6 +336,10 @@ MutsNeedlePlot.prototype.drawRegions = function(svg, regionData) {
             .attr("width", x(maxCoord) - x(minCoord) )
             .attr("height", 10)
             .attr("fill", "lightgrey");
+
+
+        d3.select(".extent")
+            .attr("y", y(0) + region_offset - 10);
 
 
         var regions = regionsBG = d3.select(".mutneedles").selectAll()

@@ -22,9 +22,24 @@ var colorMap = {
   "synonymous_variant": "lightblue"
 };
 
-var config = {maxCoord: 350, mutationData: muts, regionData: regions, target: target, legends: legends, colorMap: colorMap }
+var config = {maxCoord: 350, mutationData: muts, regionData: regions, target: target, legends: legends, colorMap: colorMap,
+  width: 600, height: 450, responsive: 'resize'};
 
 instance =  new mutneedles(config);
+
+create_download_link = function() {
+  var s = document.getElementsByTagName('svg')[0];
+  var x = new XMLSerializer();
+  var b64 = btoa(x.serializeToString(s));
+  var a = document.createElement('a');
+  a.appendChild(document.createTextNode("Download SVG"));
+  a.download = 'mutations-needle-plot.svg';
+  a.href = 'data:image/svg+xml;base64,\n'+b64;
+  a.hreflang = 'image/svg+xml';
+  document.getElementsByTagName('body')[0].appendChild(a);
+};
+
+create_download_link();
 
 // BioJS event system test
 //instance=instance
