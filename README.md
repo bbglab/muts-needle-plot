@@ -51,6 +51,14 @@ Once you have `npm` installed you may install the latest release (from the npm-r
       * Enter the newly created code dir and install it with `npm`: ```npm install```
       * Run the examples (snippets) with the command `npm run sniper` and access them at the url <http://localhost:9090/snippets/> in your browser
 
+Proxy
+-----------
+Watch out, if you are sitting behind a (corporate) proxy, you should communicate this to npm as follows before trying to install the libraries:
+
+```
+npm config set proxy http://proxy.company.com:8080
+npm config set https-proxy http://proxy.company.com:8080
+```
 
 Issues
 ----------

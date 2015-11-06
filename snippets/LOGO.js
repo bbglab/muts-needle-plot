@@ -19,6 +19,7 @@ var muts = [
 
 var regions = [
   {"name": "cluster-1", "coord": "145-155"},
+  {"name": "1base-region", "coord": "160-160"},
   {"name": "cluster-2", "coord": "170-172"}
 ];
 

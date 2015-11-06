@@ -486,6 +486,10 @@ MutsNeedlePlot.prototype.drawRegions = function(svg, regionData) {
 
             regions[key].start = getRegionStart(regions[key].coord);
             regions[key].end = getRegionEnd(regions[key].coord);
+            if (regions[key].start == regions[key].end) {
+                regions[key].start -= 0.4;
+                regions[key].end += 0.4;
+            }
             regions[key].color = getColor(regions[key].name);
             /*regionList.push({
                 'name': key,
