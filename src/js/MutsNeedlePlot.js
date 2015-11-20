@@ -486,10 +486,6 @@ MutsNeedlePlot.prototype.drawRegions = function(svg, regionData) {
 
             regions[key].start = getRegionStart(regions[key].coord);
             regions[key].end = getRegionEnd(regions[key].coord);
-            if (regions[key].start == regions[key].end) {
-                regions[key].start -= 0.4;
-                regions[key].end += 0.4;
-            }
             regions[key].color = getColor(regions[key].name);
             /*regionList.push({
                 'name': key,
@@ -528,12 +524,19 @@ MutsNeedlePlot.prototype.drawAxes = function(svg) {
       .attr("transform", "translate(0," + (this.height - this.buffer) + ")")
       .call(xAxis);
 
-    yAxis = d3.svg.axis().scale(y).orient("left");
-
+    yAxis = d3.svg.axis().scale(y).orient("left").tickFormat(function(d) {
+    var yAxisLabel = ""; 
+    if (d == '1.0') {
+        yAxisLabel = "Benign";
+    } else if (d == "2.0") {
+        yAxisLabel = "Pathogenic";
+    }   
+    return yAxisLabel;
+    });
 
     svg.append("svg:g")
       .attr("class", "y-axis axis")
-      .attr("transform", "translate(" + (this.buffer * 1.2 + - 10)  + ",0)")
+      .attr("transform", "translate(" + (this.buffer * 1.2 + 5)  + ",0)")
       .call(yAxis);
 
     // appearance for x and y legend
@@ -616,12 +619,21 @@ MutsNeedlePlot.prototype.drawNeedles = function(svg, mutationData, regionData) {
         numericCoord = formatCoord(d.coord);
         numericValue = Number(d.value);
         stickHeight = stackNeedle(numericCoord, numericValue, needlePoint);
+        
+        //Modify height parameter to instead match pathogenicity state
+        stickHeight = 0;
+        if (d.category == 'Benign') {
+            stickHeight = 1;
+        } else if (d.category == 'Pathogenic') {
+            stickHeight = 2;
+        }
+
         category = d.category || "other";
 
         if (stickHeight + numericValue > highest) {
             // set Y-Axis always to highest available
-            highest = stickHeight + numericValue;
-            getYAxis().domain([0, highest + 2]);
+            highest = stickHeight;
+            getYAxis().domain([0, highest + 1]);
         }
 
 
@@ -674,7 +686,7 @@ MutsNeedlePlot.prototype.drawNeedles = function(svg, mutationData, regionData) {
 
         minSize = 4;
         maxSize = 10;
-        headSizeScale = d3.scale.log().range([minSize,maxSize]).domain([1, highest/2]);
+        headSizeScale = d3.scale.log().range([minSize,maxSize]).domain([1, (highest+2)/2]);
         var headSize = function(n) {
             return d3.min([d3.max([headSizeScale(n),minSize]), maxSize]);
         };
@@ -683,8 +695,8 @@ MutsNeedlePlot.prototype.drawNeedles = function(svg, mutationData, regionData) {
         var needles = d3.select(".mutneedles").selectAll()
             .data(muts).enter()
             .append("line")
-            .attr("y1", function(data) { return y(data.stickHeight + data.value) + headSize(data.value) ; } )
-            .attr("y2", function(data) { return y(data.stickHeight) })
+            .attr("y1", function(data) { return y(data.stickHeight) + headSize(data.value) ; } )
+            .attr("y2", function(data) { return y(0) })
             .attr("x1", function(data) { return x(data.coord) })
             .attr("x2", function(data) { return x(data.coord) })
             .attr("class", "needle-line")
@@ -694,7 +706,7 @@ MutsNeedlePlot.prototype.drawNeedles = function(svg, mutationData, regionData) {
         var needleHeads = d3.select(".mutneedles").selectAll()
             .data(muts)
             .enter().append("circle")
-            .attr("cy", function(data) { return y(data.stickHeight+data.value) } )
+            .attr("cy", function(data) { return y(data.stickHeight) } )
             .attr("cx", function(data) { return x(data.coord) } )
             .attr("r", function(data) { return headSize(data.value) })
             .attr("class", "needle-head")

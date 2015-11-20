@@ -9,10 +9,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bbglab/muts-needle-plot.git"
+    "url": "https://github.com/cmarkello/muts-needle-plot.git"
   },
   "bugs": {
-    "url": "https://github.com/bbglab/muts-needle-plot.git/issues"
+    "url": "https://github.com/cmarkello/muts-needle-plot.git/issues"
   },
   "license": "Apache 2",
   "main": "src/js/MutNeedles",
