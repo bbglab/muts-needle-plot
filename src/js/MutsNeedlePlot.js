@@ -284,7 +284,7 @@ MutsNeedlePlot.prototype.drawLegend = function(svg) {
         .onLegendClick(showNoShow)
         .cellPadding(4)
         .orientation("vertical")
-        .units(sum + " Mutations")
+        .units(sum + " Variants")
         .cellWidth(20)
         .cellHeight(12)
         .inputScale(mutsScale)
