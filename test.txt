@@ -1,0 +1,1 @@
+This tests that the branch was downloaded and installed.

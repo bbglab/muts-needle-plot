@@ -2,11 +2,11 @@ d3.svg.legend = function() {
 
     var legendValues=[{color: "red", stop: [0,1]},{color: "blue", stop: [1,2]},{color: "purple", stop: [2,3]},{color: "yellow", stop: [3,4]},{color: "Aquamarine", stop: [4,5]}];
     var legendScale;
-    var cellWidth = 30;
+    var cellWidth = 50;
     var cellHeight = 20;
     var adjustable = false;
     var labelFormat = d3.format(".01f");
-    var coordinates = {x:0, y:0};
+    var coordinates = {x:-300, y:0};
     var labelUnits = "units";
     var lastValue = 6;
     var changeValue = 1;
@@ -45,7 +45,7 @@ d3.svg.legend = function() {
             })
             .on("dragstart", function() {
                 d3.event.sourceEvent.stopPropagation(); // silence other listeners
-            });
+        });
 
         function init() {
             var mutLegendGroup = svg.append("g")
@@ -79,7 +79,7 @@ d3.svg.legend = function() {
             legendValues[valuePosition - 1].stop[1] += changeVal;
             redraw();
         }
-
+        
         function redraw() {
 
 
@@ -99,8 +99,15 @@ d3.svg.legend = function() {
                     .attr("transform", function(d,i) {return "translate(0," + (i * (cellHeight + cellPadding)) + ")" });
             }
             else {
-                legend.target.selectAll("g.legendCells").attr("transform", function(d,i) {return "translate(" + (i * cellWidth) + ",0)" });
-                legend.target.selectAll("text.breakLabels").style("text-anchor", "middle").attr("x", 0).attr("y", -7).style("display", function(d,i) {return i == 0 ? "none" : "block"}).text(function(d) {return labelFormat(d.stop[0])});
+                legend.target.selectAll("g.legendCells").attr("transform", function(d,i) {
+                    if (i<2) {
+                        return "translate(" + (i * (cellWidth + cellPadding+180)) + ",-13)"
+                    }
+                    else {
+                        return "translate(" + ((i-2) * (cellWidth + cellPadding+180)) + ",13)"
+                    } 
+                });
+                legend.target.selectAll("text.breakLabels").style("text-anchor", "start").attr("x", 23).attr("y", 10).style("display", "block").text(function(d) {return labelFormat(d.stop[0])});
             }
         }
 
@@ -146,7 +153,7 @@ d3.svg.legend = function() {
 
         legend.target.append("text")
             .text(labelUnits)
-            .attr("y", -7)
+            .attr("y", -22)
             .attr("class", "legendTitle");
 
         redraw();
