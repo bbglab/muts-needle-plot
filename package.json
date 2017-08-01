@@ -4,8 +4,8 @@
   "version": "0.9.1",
   "homepage": "https://github.com/cmarkello/muts-needle-plot",
   "author": {
-    "name": "Michael P Schroeder",
-    "email": "michael.p.schroeder@gmail.com"
+    "name": "Charles Markello",
+    "email": "cmarkell@ucsc.edu"
   },
   "repository": {
     "type": "git",
@@ -26,10 +26,14 @@
   },
   "dependencies": {
     "biojs-events": "0.0.4",
-    "sniper": "^0.2.16",
     "d3-tip": "0.6.7",
+    "fs": "0.0.1-security",
+    "js": "^0.1.0",
     "js-class": "0.0.2",
-    "js-extend": "0.0.2"
+    "js-extend": "0.0.2",
+    "prepare": "0.0.6",
+    "sniper": "^0.2.16",
+    "vinyl-fs": "^2.4.4"
   },
   "devDependencies": {
     "sniper": "^0.0.4",
