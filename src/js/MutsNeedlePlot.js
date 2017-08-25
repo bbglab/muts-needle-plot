@@ -115,7 +115,7 @@ function MutsNeedlePlot (config) {
           .nice();
     } else if (self.brcakey.indexOf('Allele') !== -1) {
         var yScale = d3.scale.log()
-          .domain([0.00001,1.0])
+          .domain([0.000001,1.0])
           .range([height-50 - buffer * 3.0, buffer])
           .nice();
     };
@@ -454,7 +454,7 @@ MutsNeedlePlot.prototype.drawLegend = function(plotArea) {
     if (self.brcakey.indexOf('Path') !== -1) {
         legendBoxLabel = "Pathogenicity of " + sum + " Variants";
     } else if (self.brcakey.indexOf('Allele') !== -1) {
-        legendBoxLabel = "Maximum Allele Frequency of " + sum + " Variants";
+        legendBoxLabel = "Allele Frequency of " + sum + " Variants";
     }
     horizontalLegend = d3.svg.legend()
         .labelFormat(legendLabel)
@@ -691,7 +691,10 @@ MutsNeedlePlot.prototype.drawAxes = function(plotChart, navChart) {
     var y = this.yScale;
     var x = this.xScale;
     var brcakey = this.brcakey;
-
+    var width = this.width;
+    var buffer = this.buffer;
+    var tickWidth = width-(buffer*1.3)-10
+    
     xAxis = d3.svg.axis().scale(x).ticks(8).orient("bottom");
 
     plotChart.append("svg:g")
@@ -714,18 +717,16 @@ MutsNeedlePlot.prototype.drawAxes = function(plotChart, navChart) {
     } else if (brcakey.indexOf('Allele') !== -1) {
         yAxis = d3.svg.axis().scale(y).orient("left").ticks(6).tickFormat(function(d) {
             var yAxisLabel = "";
-            if (d == "1.0") {
-                yAxisLabel = "<0.0001";
-            } else if (d == "2.0") {
-                yAxisLabel = "<0.001";
-            } else if (d == "3.0") {
-                yAxisLabel = "<0.01";
-            } else if (d == "4.0") {
-                yAxisLabel = "<0.05";
-            } else if (d == "5.0") {
-                yAxisLabel = "<0.5";
-            } else if (d == "6.0") {
-                yAxisLabel = ">=0.5";
+            if (d == "0.0001") {
+                yAxisLabel = "0.0001";
+            } else if (d == "0.001") {
+                yAxisLabel = "0.001";
+            } else if (d == "0.01") {
+                yAxisLabel = "0.01";
+            } else if (d == "0.1") {
+                yAxisLabel = "0.1";
+            } else if (d == "1.0") {
+                yAxisLabel = "1.0";
             } 
             return yAxisLabel;
         });
@@ -839,11 +840,13 @@ MutsNeedlePlot.prototype.drawNeedles = function(plotChart, plotArea, navChart, m
                 stickHeight = 2;
             } else if (d.category === 'Pathogenic') {
                 stickHeight = 3;
+            } else {
+                stickHeight = 0.1;
             }
             getYAxis().domain([0, 3]);
         } else if (brcakey.indexOf('Allele') !== -1) {
-            if (d.alleleFreqCategory === 'Uncertain') {
-                stickHeight = 1.0;
+            if (d.alleleFreqCategory === 'Uncertain' || d.alleleFreqCategory === 'None' || d.alleleFreq <= 0.000015) {
+                stickHeight = 0.000015;
             } else {
                 stickHeight = d.alleleFreq;
             }
@@ -920,7 +923,7 @@ MutsNeedlePlot.prototype.drawNeedles = function(plotChart, plotArea, navChart, m
             .data(muts).enter()
             .append("line")
             .attr("y1", function(data) { return y(data.stickHeight)+50 + headSize(data.value) ; } )
-            .attr("y2", function(data) { return y(0.00001)+50 })
+            .attr("y2", function(data) { return y(0.0000001)+50 })
             .attr("x1", function(data) { return x(data.coord) })
             .attr("x2", function(data) { return x(data.coord) })
             .attr("class", "needle-line")

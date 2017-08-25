@@ -100,11 +100,11 @@ d3.svg.legend = function() {
             }
             else {
                 legend.target.selectAll("g.legendCells").attr("transform", function(d,i) {
-                    if (i<3) {
+                    if (i<4) {
                         return "translate(" + (i * (cellWidth + cellPadding+200)) + ",-13)"
                     }
                     else {
-                        return "translate(" + ((i-3) * (cellWidth + cellPadding+200)) + ",13)"
+                        return "translate(" + ((i-4) * (cellWidth + cellPadding+200)) + ",13)"
                     } 
                 });
                 legend.target.selectAll("text.breakLabels").style("text-anchor", "start").attr("x", 23).attr("y", 10).style("display", "block").text(function(d) {return labelFormat(d.stop[0])});
